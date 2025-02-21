@@ -1,0 +1,18 @@
+# MultiBank Configuration File
+settings:
+    max-bank-profiles: 3 # Maximum number of bank profiles a player can have
+    default-starting-balance: 100.0 # Default balance when creating a new bank profile
+
+interest:
+    enable-interest: true # Enable or disable interest earnings
+    interest-rate: 0.02 # 2% interest per cycle
+    interest-interval: 3600 # Time (in seconds) between interest payouts (e.g., 3600s = 1 hour)
+    max-interest-balance: 50000.0 # Maximum balance that earns interest
+
+loans:
+    enable-loans: true # Allow players to take out loans
+    max-loan-amount: 5000.0 # Maximum loan a player can take
+    loan-interest-rate: 0.05 # 5% interest on loans
+    loan-repayment-interval: 86400 # Time (in seconds) between loan repayments (86400s = 24 hours)
+
+version: 1 # Configuration file version, do not change!

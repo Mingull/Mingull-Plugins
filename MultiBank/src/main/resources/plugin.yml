@@ -1,0 +1,19 @@
+name: MultiBank
+version: 1.0.0
+main: nl.mingull.multibank.MultiBankPlugin
+description: A plugin that allows users to manage multiple bank profiles, take out loans, and earn interest on their deposits in Minecraft.
+author: Mingull
+api-version: "1.21.4"
+prefix: "MultiBank"
+website: https://mingull.nl/multibank
+depend:
+    - MingullCore
+    - Vault
+
+commands:
+    multibank:
+        description: Opens the MultiBank menu.
+        usage: "/<command>"
+        aliases: [bank]
+        permission: multibank.use
+        permission-message: "You don't have permission to use MultiBank."

@@ -1,0 +1,12 @@
+// core/build.gradle
+
+dependencies {
+    implementation 'net.kyori:adventure-text-minimessage:4.18.0'
+}
+
+jar {
+    archiveBaseName.set('MingullCore')
+}
+
+group = 'nl.mingull.core'
+version = '1.0.0'

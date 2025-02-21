@@ -1,0 +1,6 @@
+insufficient-funds: "&cYou do not have enough money to complete this transaction!"
+deposit-success: "&aSuccessfully deposited {amount} into your bank!"
+withdraw-success: "&aSuccessfully withdrew {amount} from your bank!"
+interest-earned: "&aYou have earned {amount} in interest!"
+loan-taken: "&aYou have taken out a loan of {amount}. Pay it back on time!"
+loan-repaid: "&aLoan payment of {amount} has been deducted!"

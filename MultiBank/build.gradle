@@ -1,0 +1,6 @@
+dependencies {
+    compileOnly project(':core')
+}
+
+group = 'nl.mingull.multibank'
+version = '1.0.0'

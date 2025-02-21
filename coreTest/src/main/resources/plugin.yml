@@ -1,0 +1,16 @@
+name: MingullCoreTest
+version: 1.0.0
+main: nl.mingull.coreTest.CoreTestPlugin
+description: A core plugin for all Mingull plugins.
+author: Mingull
+api-version: "1.21.4"
+prefix: "MingullCoreTest"
+website: https://mingull.nl/MingullAPI
+# depend:
+#     - MingullCore
+
+commands:
+    mingullcore:
+        description: Main command for the MingullCore plugin.
+        usage: /<command> <subcommand> [...args]
+        aliases: [mc, mcore]

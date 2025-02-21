@@ -1,0 +1,46 @@
+// Root build.gradle file
+
+plugins {
+    id 'java'
+}
+
+// Apply common settings to all subprojects
+subprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'papermc'
+            url = 'https://repo.papermc.io/repository/maven-public/'
+        }
+    }
+
+    dependencies {
+        compileOnly 'io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT'
+        implementation 'net.kyori:adventure-text-minimessage:4.18.0'
+    }
+
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    }
+
+    jar {
+        archiveBaseName.set(project.name)
+    }
+}
+
+// Disable the jar task for the root project (so it doesn't create a JAR)
+tasks.named('jar') {
+    enabled = false
+}
+
+// Create a task to copy built JARs from all subprojects to the 'dist' folder
+task copyJars(type: Copy) {
+    from subprojects.collect { it.tasks.named('jar') }
+    into 'dist'
+}
+
+tasks.named('build') {
+    finalizedBy(copyJars)
+}

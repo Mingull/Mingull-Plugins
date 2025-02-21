@@ -1,0 +1,8 @@
+name: MingullCore
+version: 1.0.0
+main: nl.mingull.core.CorePlugin
+description: A core plugin for all Mingull plugins.
+author: Mingull
+api-version: "1.21.4"
+prefix: "MingullCore"
+website: https://mingull.nl/MingullCore

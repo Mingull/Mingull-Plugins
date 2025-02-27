@@ -32,6 +32,11 @@ public class MenuManager implements Manager {
 		}
 	}
 
+	/**
+	 * Creates the MenuManager
+	 * 
+	 * @param plugin The plugin that is creating the MenuManager
+	 */
 	public static void create(Plugin plugin) {
 		plugin.getLogger().info("Creating MenuManager");
 
@@ -41,10 +46,17 @@ public class MenuManager implements Manager {
 		plugin.getLogger().info("MenuManager created");
 	}
 
+	/**
+	 * Open a menu for a player
+	 * 
+	 * @param menu The menu class to open
+	 * @param player The player to open the menu for
+	 * @throws MenuManagerException
+	 * @throws MenuManagerNotCreatedException
+	 */
 	public static void openMenu(Class<? extends Menu> menu, Player player)
 			throws MenuManagerException, MenuManagerNotCreatedException {
 		try {
-			Bukkit.getLogger().info("Opening menu " + menu.getName() + " for " + player.getName());
 			menu.getConstructor(PlayerMenuController.class)
 					.newInstance(getPlayerMenuController(player)).open();
 		} catch (InstantiationException e) {
@@ -60,13 +72,18 @@ public class MenuManager implements Manager {
 		}
 	}
 
-
+	/**
+	 * Get the PlayerMenuController for a player
+	 * 
+	 * @param player The player to get the controller for
+	 * @return The controller for the player
+	 * @throws MenuManagerNotCreatedException
+	 */
 	public static PlayerMenuController getPlayerMenuController(Player player)
 			throws MenuManagerNotCreatedException {
 		if (!isCreated) {
 			throw new MenuManagerNotCreatedException();
 		}
-
 
 		if (!(controllers.containsKey(player))) {
 			PlayerMenuController pmc = new PlayerMenuController(player);
@@ -78,11 +95,16 @@ public class MenuManager implements Manager {
 		}
 	}
 
+	/**
+	 * Remove the PlayerMenuController for a player
+	 * 
+	 * @param player The player to remove the controller for
+	 * @throws MenuManagerNotCreatedException
+	 */
 	public static void removePlayerMenuController(Player player)
 			throws MenuManagerNotCreatedException {
 		PlayerMenuController pmc = getPlayerMenuController(player);
 		if (pmc != null) {
-			Bukkit.getLogger().info("Removing player menu controller for " + player.getName());
 			controllers.remove(pmc.getOwner());
 		}
 	}

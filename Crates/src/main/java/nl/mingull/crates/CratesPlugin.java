@@ -13,6 +13,7 @@ import nl.mingull.core.commandKit.CommandManager;
 import nl.mingull.core.menuKit.MenuManager;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.commands.CreateCommand;
+import nl.mingull.crates.listeners.CrateLocationSelector;
 import nl.mingull.crates.managers.CrateManager;
 import nl.mingull.crates.menus.MainMenu;
 
@@ -20,6 +21,7 @@ public class CratesPlugin extends JavaPlugin implements Listener {
 	private static CratesPlugin instance;
 	private CommandManager commandManager;
 	private CrateManager crateManager;
+	private CrateLocationSelector crateLocationSelector;
 
 	@Override
 	public void onLoad() {}
@@ -29,7 +31,9 @@ public class CratesPlugin extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(this, this);
 		instance = this;
 		this.saveDefaultConfig();
-		crateManager = new CrateManager(this);
+		this.crateManager = new CrateManager(this);
+		this.crateLocationSelector = new CrateLocationSelector(crateManager);
+		Bukkit.getPluginManager().registerEvents(crateLocationSelector, this);
 
 		commandManager = new CommandManager(this, "crates", Arrays.asList("crate"));
 		commandManager.setPermission(new Permission("crates.use"));
@@ -73,6 +77,10 @@ public class CratesPlugin extends JavaPlugin implements Listener {
 	 */
 	public CrateManager getCrateManager() {
 		return crateManager;
+	}
+
+	public CrateLocationSelector getCrateLocationSelector() {
+		return crateLocationSelector;
 	}
 }
 

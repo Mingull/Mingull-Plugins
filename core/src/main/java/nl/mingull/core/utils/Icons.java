@@ -47,9 +47,17 @@ public final class Icons {
 		return icon;
 	}
 
+	public static final Icon createHeadIcon(String url, String name) {
+		return createHeadIcon(url, name, null, null);
+	}
+
 	public static final Icon createHeadIcon(String url, String name, String... lore) {
 		return createHeadIcon(url, Messenger.format(name),
 				Arrays.stream(lore).map(Messenger::format).toArray(Component[]::new));
+	}
+
+	public static final Icon createHeadIcon(String url, Component name) {
+		return createHeadIcon(url, name, null, null);
 	}
 
 	public static final Icon createHeadIcon(String url, Component name, Component... lore) {

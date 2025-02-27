@@ -10,8 +10,8 @@
 	"java.dependency.packagePresentation": "flat",
 	"cSpell.suggestionMenuType": "quickFix",
 	"cSpell.language": "en,nl",
+	"java.project.explorer.showNonJavaResources": true,
 	"yaml.schemas": {
-		"https://json.schemastore.org/bukkit-plugin.json": "file:///c%3A/Users/niels/Desktop/development/MC-Plugins/MingullPlugins/MultiBank/src/main/resources/plugin.yml"
-	},
-	"java.project.explorer.showNonJavaResources": true
+		"https://json.schemastore.org/bukkit-plugin.json": "file:///c%3A/Users/niels/Desktop/development/mc_plugins/Mingull-Plugins/core/src/main/resources/plugin.yml"
+	}
 }

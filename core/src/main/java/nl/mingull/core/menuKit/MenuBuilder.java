@@ -31,7 +31,7 @@ public class MenuBuilder {
 	public Menu build() {
 		Menu menu = new Menu(null) {
 			@Override
-			public Component getMenuTitle() {
+			public Component getTitle() {
 				return name;
 			}
 

@@ -1,90 +1,73 @@
 package nl.mingull.crates.menus;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.kyori.adventure.text.Component;
+import nl.mingull.core.menuKit.Icon;
 import nl.mingull.core.menuKit.PaginatedMenu;
 import nl.mingull.core.menuKit.PlayerMenuController;
+import nl.mingull.core.menuKit.utils.BorderType;
 import nl.mingull.core.utils.Icons;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.models.Crate;
 
 public class CrateLocationsMenu extends PaginatedMenu {
 	private final CratesPlugin plugin;
-	// private final Crate crate;
-	// private final CrateManager crateManager;
+	private final Crate crate;
 
 	public CrateLocationsMenu(PlayerMenuController pmc) {
 		super(pmc);
 		this.plugin = JavaPlugin.getPlugin(CratesPlugin.class);
-
+		this.crate = pmc.getData("crate", Crate.class);
+		border.setBorder(BorderType.FULL, Icons.GlassPane.StainedBlack, getRows());
+		setBackIcon(45);
+		withFirstIcon();
+		withLastIcon();
 		this.border.setIcon(49, Icons.createHeadIcon(
 				"http://textures.minecraft.net/texture/b056bc1244fcff99344f12aba42ac23fee6ef6e3351d27d273c1572531f",
-				"<green>Add location", "<!italic><gray>Click to add a location")
-				.setAction(player -> {
+				"<green>Add location", "<gray>Click to add a location").setAction(player -> {
+					plugin.getCrateLocationSelector().startSelection(player, crate.getName());
 					player.closeInventory();
-					player.sendMessage(Messenger.format("<red>Click a block to add a location"));
+					player.sendMessage(
+							Messenger.format("<green>Right-click a block to add a crate location"));
 				}));
 
-		// this.crate = crate;
-		// this.crateManager = crateManager;
-		// this.borderBottom(Icons.GlassPane.StainedBlue);
-		// this.setData(getLocationIcons());
-		// this.setIcon(47, Icons.createIcon(Material.ARROW, "<!italic><green>Previous",
-		// "<!italic><gray>Go to the previous page."));
-		// this.setIcon(49, Icons.createHeadIcon(
-		// "http://textures.minecraft.net/texture/b056bc1244fcff99344f12aba42ac23fee6ef6e3351d27d273c1572531f",
-		// "<green>Add location", "<!italic><gray>Click to add a location")
-		// // .setAction(player -> {
-		// // player.closeInventory();
-		// // player.sendMessage(Messenger.format("<red>Click a block to add a location"));
-
-		// // })
-		// );
-		// this.setIcon(51, Icons.createIcon(Material.ARROW, "<!italic><green>Next",
-		// "<!italic><gray>Go to the next page."));
-
 	}
 
 	@Override
-	public List<nl.mingull.core.menuKit.Icon> populateMenu() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'populateMenu'");
+	public Component getTitle() {
+		return Messenger.format("<gold>" + crate.getDisplayName() + " <gray>> <green>Locations");
 	}
 
 	@Override
-	public Component getMenuTitle() {
-		return Messenger.format("<green>Locations");
+	public List<Icon> populateMenu() {
+		List<Icon> icons = new ArrayList<>();
+		if (this.crate != null) {
+			for (var location : this.crate.getLocations()) {
+				Icon icon = Icons.createIcon(location.getBlock().getType(),
+						Messenger.format("<gold>" + location.getBlock().getType().name()),
+						Component.empty(),
+						Messenger.format("<gray>World: " + location.getWorld().getName()),
+						Messenger.format("<gray>X: " + location.getBlockX()),
+						Messenger.format("<gray>Y: " + location.getBlockY()),
+						Messenger.format("<gray>Z: " + location.getBlockZ()), Component.empty(),
+						Messenger.format("<yellow>Click to teleport"),
+						Messenger.format("<red>Right-Click to remove"));
+				icon.setAction((p, e) -> {
+					if (e.isRightClick()) {
+						plugin.getCrateManager().removeCrateLocation(crate.getName(), location);
+						p.sendMessage(Messenger.format("<red>Removed location"));
+						super.open(); // Refresh the menu after removing the location
+					} else {
+						p.teleport(location);
+						p.sendMessage(Messenger.format("<green>Teleported to location"));
+					}
+				});
+				icons.add(icon);
+			}
+		}
+		return icons;
 	}
-
-
-	// private List<Icon> getLocationIcons() {
-	// List<Icon> icons = new ArrayList<>();
-	// if (this.crate != null) {
-	// for (var location : this.crate.getLocations()) {
-	// AdvancedIcon icon = Icons.createIcon(location.getBlock().getType(),
-	// Messenger.format("<!italic><gold>" + location.getBlock().getType().name()),
-	// Component.empty(),
-	// Messenger.format("<!italic><gray>World: " + location.getWorld().getName()),
-	// Messenger.format("<!italic><gray>X: " + location.getBlockX()),
-	// Messenger.format("<!italic><gray>Y: " + location.getBlockY()),
-	// Messenger.format("<!italic><gray>Z: " + location.getBlockZ()),
-	// Component.empty(), Messenger.format("<!italic><yellow>Click to teleport"),
-	// Messenger.format("<!italic><red>Right-Click to remove"));
-	// icon.setAction((p, e) -> {
-	// if (e.isRightClick()) {
-	// crateManager.removeCrateLocation(crate.getName(), location);
-	// p.sendMessage(Messenger.format("<red>Removed location"));
-	// reload(); // Refresh the menu after removing the location
-	// } else {
-	// p.teleport(location);
-	// p.sendMessage(Messenger.format("<green>Teleported to location"));
-	// }
-	// });
-	// icons.add(icon);
-	// }
-	// }
-	// return icons;
-	// }
-
 }

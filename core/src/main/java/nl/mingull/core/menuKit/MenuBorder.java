@@ -26,8 +26,15 @@ public class MenuBorder {
 	}
 
 	public void setBorder(BorderType type, Icon icon, Rows rows) {
+		setBorder(type, icon, rows, false);
+	}
+
+	public void setBorder(BorderType type, Icon icon, Rows rows, boolean cancelClicks) {
 		this.type = type;
 		this.icon = icon;
+		this.icon.setAction((p, e) -> {
+			e.setCancelled(cancelClicks);
+		});
 		createBorder(rows);
 	}
 
@@ -80,6 +87,9 @@ public class MenuBorder {
 		return slots;
 	}
 
+	/**
+	 * @return The size of the border.
+	 */
 	public int getSize() {
 		return icons.size();
 	}
@@ -92,7 +102,7 @@ public class MenuBorder {
 	 */
 	public void setIcon(int slot, Icon icon) {
 		try {
-			if (!getBorderSlots().contains(slot)) {
+			if (!getBorderSlots().isEmpty() && !getBorderSlots().contains(slot)) {
 				throw new MenuBorderException("Icon must be placed on the border.");
 			}
 		} catch (MenuBorderException e) {

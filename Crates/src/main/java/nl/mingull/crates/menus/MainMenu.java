@@ -19,7 +19,7 @@ public class MainMenu extends Menu {
 	}
 
 	@Override
-	public Component getMenuTitle() {
+	public Component getTitle() {
 		return Messenger.format("<gray>Crate Manager");
 	}
 

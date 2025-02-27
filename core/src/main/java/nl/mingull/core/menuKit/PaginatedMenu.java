@@ -4,7 +4,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.bukkit.Bukkit;
+import java.util.function.Consumer;
 import org.bukkit.Material;
 import nl.mingull.core.menuKit.utils.BorderType;
 import nl.mingull.core.utils.Icons;
@@ -22,7 +22,6 @@ public abstract class PaginatedMenu extends Menu {
 
 	private boolean withFirstButton = false;
 	private boolean withLastButton = false;
-	private boolean withBackButton = false;
 	private Button firstButton = new Button(new Icon(Material.ARROW,
 			Messenger.format(isFirst() ? "<gray>First Page" : "<green>First page"))
 					.setAction(p -> first()),
@@ -39,14 +38,7 @@ public abstract class PaginatedMenu extends Menu {
 			Messenger.format(isLast() ? "<gray>Last Page" : "<green>Last page"))
 					.setAction(p -> last()),
 			51);
-	private Button backButton =
-			new Button(new Icon(Material.BARRIER, Messenger.format("Back")).setAction(p -> {
-				try {
-					back();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}), 45);
+
 
 	/**
 	 * Creates a new paginated menu with a border.
@@ -55,9 +47,10 @@ public abstract class PaginatedMenu extends Menu {
 	 */
 	public PaginatedMenu(PlayerMenuController pmc) {
 		super(pmc);
-		border.setBorder(BorderType.BOTTOM, Icons.GlassPane.StainedLightBlue, getRows());
+		border.setBorder(BorderType.BOTTOM, Icons.GlassPane.StainedBlack, getRows());
+		border.setIcon(prevButton.getSlot(), prevButton.getIcon());
+		border.setIcon(nextButton.getSlot(), nextButton.getIcon());
 		this.pageSize = calculatePageSize();
-		addPaginationButtons();
 		support.addPropertyChangeListener(evt -> {
 			if ("index".equals(evt.getPropertyName())) {
 				reloadItems();
@@ -77,7 +70,6 @@ public abstract class PaginatedMenu extends Menu {
 
 	@Override
 	public Map<Integer, Icon> getIcons() {
-		addPaginationButtons();
 		List<Icon> items = getData();
 		Map<Integer, Icon> icons = new HashMap<>();
 
@@ -136,6 +128,12 @@ public abstract class PaginatedMenu extends Menu {
 		support.firePropertyChange("index", oldIndex, newIndex);
 	}
 
+	private void setIndex(Consumer<Integer> consumer) {
+		int oldIndex = this.index;
+		consumer.accept(index);
+		support.firePropertyChange("index", oldIndex, index);
+	}
+
 	/**
 	 * Moves to the first page if enabled.
 	 *
@@ -156,7 +154,9 @@ public abstract class PaginatedMenu extends Menu {
 	 */
 	public boolean next() {
 		if (hasNext()) {
-			index++;
+			setIndex((index) -> {
+				index++;
+			});
 			reloadItems();
 			return true;
 		}
@@ -226,24 +226,6 @@ public abstract class PaginatedMenu extends Menu {
 	}
 
 	/**
-	 * Adds pagination buttons to the menu.
-	 */
-	private void addPaginationButtons() {
-		border.setIcon(prevButton.getSlot(), prevButton.getIcon());
-		border.setIcon(nextButton.getSlot(), nextButton.getIcon());
-
-		if (withFirstButton) {
-			border.setIcon(firstButton.getSlot(), firstButton.getIcon());
-		}
-		if (withLastButton) {
-			border.setIcon(lastButton.getSlot(), lastButton.getIcon());
-		}
-		if (withBackButton) {
-			border.setIcon(backButton.getSlot(), backButton.getIcon());
-		}
-	}
-
-	/**
 	 * Enable the to first page button.
 	 */
 	public void withFirstIcon() {
@@ -260,7 +242,7 @@ public abstract class PaginatedMenu extends Menu {
 	public void setFirstIcon(int slot, Icon icon) {
 		this.withFirstButton = true;
 		this.firstButton = new Button(icon, slot);
-		addPaginationButtons();
+		border.setIcon(firstButton.getSlot(), firstButton.getIcon());
 	}
 
 	/**
@@ -271,7 +253,7 @@ public abstract class PaginatedMenu extends Menu {
 	 */
 	public void setPrevIcon(int slot, Icon icon) {
 		this.prevButton = new Button(icon, slot);
-		addPaginationButtons();
+		border.setIcon(prevButton.getSlot(), prevButton.getIcon());
 	}
 
 	/**
@@ -282,7 +264,7 @@ public abstract class PaginatedMenu extends Menu {
 	 */
 	public void setNextIcon(int slot, Icon icon) {
 		this.nextButton = new Button(icon, slot);
-		addPaginationButtons();
+		border.setIcon(nextButton.getSlot(), nextButton.getIcon());
 	}
 
 	/**
@@ -302,27 +284,7 @@ public abstract class PaginatedMenu extends Menu {
 	public void setLastIcon(int slot, Icon icon) {
 		this.withLastButton = true;
 		this.lastButton = new Button(icon, slot);
-		addPaginationButtons();
-	}
-
-	/**
-	 * Enable the back button.
-	 */
-	public void withBackIcon() {
-		this.withBackButton = true;
-		setBackIcon(backButton.getSlot(), backButton.getIcon());
-	}
-
-	/**
-	 * Enable the back button with custom border slot and icon.
-	 * 
-	 * @param slot The slot to place the icon. Must be on the border. default is 45.
-	 * @param icon The icon to place.
-	 */
-	public void setBackIcon(int slot, Icon icon) {
-		this.withBackButton = true;
-		this.backButton = new Button(icon, slot);
-		addPaginationButtons();
+		border.setIcon(lastButton.getSlot(), lastButton.getIcon());
 	}
 
 	/**

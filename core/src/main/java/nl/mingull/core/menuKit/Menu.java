@@ -3,6 +3,7 @@ package nl.mingull.core.menuKit;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import net.kyori.adventure.text.Component;
 import nl.mingull.core.menuKit.exceptions.MenuManagerException;
 import nl.mingull.core.menuKit.exceptions.MenuManagerNotCreatedException;
+import nl.mingull.core.utils.Messenger;
 
 public abstract class Menu implements InventoryHolder {
 	private Inventory inventory;
@@ -18,6 +20,7 @@ public abstract class Menu implements InventoryHolder {
 	protected PlayerMenuController playerMenuController;
 	protected Player player;
 	protected MenuBorder border;
+	private Button backButton = null;
 
 	public Menu(PlayerMenuController pmc) {
 		this.playerMenuController = pmc;
@@ -27,7 +30,7 @@ public abstract class Menu implements InventoryHolder {
 	}
 
 	public void open() {
-		inventory = Bukkit.createInventory(this, getRows().getSlots(), getMenuTitle());
+		inventory = Bukkit.createInventory(this, getRows().getSlots(), getTitle());
 
 		if (border.getBorderSlots().size() > 0) {
 			border.getBorder().forEach((slot, icon) -> {
@@ -81,7 +84,7 @@ public abstract class Menu implements InventoryHolder {
 	/**
 	 * @return the title of the menu
 	 */
-	public abstract Component getMenuTitle();
+	public abstract Component getTitle();
 
 	/**
 	 * @return the rows of the menu
@@ -137,6 +140,79 @@ public abstract class Menu implements InventoryHolder {
 			if (!icons.containsKey(i)) {
 				this.icons.put(i, icon);
 			}
+		}
+	}
+
+	/**
+	 * Enable the back button on slot 0.
+	 * <p>
+	 * Use {@link #setBackIcon(int)} to set a custom slot.
+	 */
+	public void setBackIcon() {
+		this.setBackIcon(0);
+	}
+
+	/**
+	 * Enable the back button with custom border slot.
+	 * <p>
+	 * Use {@link #setBackIcon(int, Icon)} to set a custom icon.
+	 * 
+	 * @param slot The slot to place the icon, must be on the border.
+	 */
+	public void setBackIcon(int slot) {
+		setBackIcon(slot, new Icon(Material.BARRIER, Messenger.format("<blue>Back")));
+	}
+
+	/**
+	 * Enable the back button with custom border slot and icon.
+	 * <p>
+	 * You don't have to set an action, it will automatically go back to the previous
+	 * 
+	 * @param slot The slot to place the icon. Must be on the border. default is 0.
+	 * @param icon The icon to place.
+	 */
+	public void setBackIcon(int slot, Icon icon) {
+		icon.setAction(p -> {
+			try {
+				back();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		this.backButton = new Button(icon, slot);
+		border.setIcon(backButton.getSlot(), backButton.getIcon());
+	}
+
+	/**
+	 * Represents a button inside the paginated menu.
+	 */
+	public static class Button {
+		private final int slot;
+		private final Icon icon;
+
+		/**
+		 * Creates a new Button.
+		 *
+		 * @param icon The base icon.
+		 * @param slot The slot where the button is placed.
+		 */
+		public Button(Icon icon, int slot) {
+			this.icon = icon;
+			this.slot = slot;
+		}
+
+		/**
+		 * @return The slot where the button is placed.
+		 */
+		public int getSlot() {
+			return slot;
+		}
+
+		/**
+		 * @return the icon
+		 */
+		public Icon getIcon() {
+			return icon;
 		}
 	}
 }

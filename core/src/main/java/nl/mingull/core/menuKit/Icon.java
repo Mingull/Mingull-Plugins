@@ -23,7 +23,11 @@ public class Icon {
 	 * @param material The material of the item.
 	 */
 	public Icon(Material material) {
-		this(material, Component.text("Icon"));
+		this(material, Component.text(material.toString()), 1);
+	}
+
+	public Icon(Material material, int amount) {
+		this(material, Component.text(material.toString()), amount);
 	}
 
 	/**
@@ -33,8 +37,13 @@ public class Icon {
 	 * @param name The display name of the item.
 	 */
 	public Icon(Material material, Component name) {
+		this(material, name, 1);
+	}
+
+	public Icon(Material material, Component name, int amount) {
 		this.item = new ItemStack(material);
 		this.meta = this.item.getItemMeta();
+		this.item.setAmount(amount);
 		this.setDisplayName(name);
 	}
 
@@ -148,6 +157,20 @@ public class Icon {
 	}
 
 	/**
+	 * @return The metadata of the item.
+	 */
+	public ItemMeta getMetadata() {
+		return meta;
+	}
+
+	/**
+	 * @return Whether the item has metadata.
+	 */
+	public boolean hasMetadata() {
+		return meta != null && this.item.hasItemMeta();
+	}
+
+	/**
 	 * Sets an action that will be executed when the item is clicked.
 	 *
 	 * @param action The action to execute when clicked.
@@ -169,6 +192,15 @@ public class Icon {
 	 */
 	public ItemStack getItem() {
 		return item.clone();
+	}
+
+	/**
+	 * Retrieves the amount of items in the stack.
+	 * 
+	 * @return The amount of items in the stack.
+	 */
+	public int getAmount() {
+		return item.getAmount();
 	}
 
 	public PlayerClickEvent getEventConsumer() {

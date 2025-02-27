@@ -22,7 +22,7 @@ public class ManageMenu extends Menu {
 	}
 
 	@Override
-	public Component getMenuTitle() {
+	public Component getTitle() {
 		return Messenger.format("<blue>Manage");
 	}
 

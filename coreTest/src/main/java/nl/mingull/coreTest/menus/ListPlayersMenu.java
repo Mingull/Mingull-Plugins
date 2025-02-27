@@ -11,19 +11,20 @@ import nl.mingull.core.Utils;
 import nl.mingull.core.menuKit.Icon;
 import nl.mingull.core.menuKit.PaginatedMenu;
 import nl.mingull.core.menuKit.PlayerMenuController;
+import nl.mingull.core.utils.Icons;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.coreTest.CoreTestPlugin;
 
 public class ListPlayersMenu extends PaginatedMenu {
 	public ListPlayersMenu(PlayerMenuController pmc) {
 		super(pmc);
-		setBackIcon(45, );
+		setBackIcon(45, Icons.createHeadIcon("", Messenger.format("<blue>Back")));
 		withFirstIcon();
 		withLastIcon();
 	}
 
 	@Override
-	public Component getMenuTitle() {
+	public Component getTitle() {
 		return Messenger.format("<red>Players");
 	}
 

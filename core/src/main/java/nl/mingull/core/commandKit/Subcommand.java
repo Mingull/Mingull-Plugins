@@ -3,6 +3,7 @@ package nl.mingull.core.commandKit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -122,17 +123,27 @@ public abstract class Subcommand implements TabCompleter {
 	 */
 	public abstract boolean execute(@NotNull CommandSender sender, @NotNull String[] args);
 
+	/**
+	 * Use {@link #onTab(CommandSender, Command, String, String[])} instead. This method is only
+	 * here to implement the interface.
+	 */
 	@Override
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender,
 			@NotNull Command command, @NotNull String label, @NotNull String[] args) {
-		return onTab(sender, command, label, args);
+		return onTab(sender, args);
 	}
 
 	/**
-	 * Handles tab completion for the subcommand.
+	 * Provides tab completion for the subcommand.
+	 * <p>
+	 * This method is called when the sender presses the tab key while typing the subcommand.
+	 *
+	 * @param sender The sender executing the command.
+	 * @param args The arguments provided with the command.
+	 * @return A list of possible completions for the subcommand, or an empty list if there are
+	 *         none.
 	 */
-	public @Nullable List<String> onTab(@NotNull CommandSender sender, @NotNull Command command,
-			@NotNull String label, @NotNull String[] args) {
+	public @Nullable List<String> onTab(@NotNull CommandSender sender, @NotNull String[] args) {
 		return Collections.emptyList();
 	}
 }

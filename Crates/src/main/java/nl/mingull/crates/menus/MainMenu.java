@@ -3,7 +3,10 @@ package nl.mingull.crates.menus;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Material;
+import org.bukkit.plugin.java.JavaPlugin;
 import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.chat.TextComponent;
+import nl.mingull.core.chatKit.Chat;
 import nl.mingull.core.menuKit.Icon;
 import nl.mingull.core.menuKit.Menu;
 import nl.mingull.core.menuKit.MenuManager;
@@ -11,11 +14,14 @@ import nl.mingull.core.menuKit.PlayerMenuController;
 import nl.mingull.core.menuKit.Rows;
 import nl.mingull.core.utils.Icons;
 import nl.mingull.core.utils.Messenger;
+import nl.mingull.crates.CratesPlugin;
 
 public class MainMenu extends Menu {
+	private final CratesPlugin plugin;
 
 	public MainMenu(PlayerMenuController pmc) {
 		super(pmc);
+		this.plugin = JavaPlugin.getPlugin(CratesPlugin.class);
 	}
 
 	@Override
@@ -47,8 +53,36 @@ public class MainMenu extends Menu {
 								e.printStackTrace();
 							}
 						}));
-		icons.put(5, Icons.createIcon(Material.EMERALD, Messenger.format("<gold>Create Crate"),
-				Messenger.format("<gray>Click to create a new crate")));
+		icons.put(
+				5, Icons
+						.createIcon(Material.EMERALD, Messenger.format("<gold>Create Crate"),
+								Messenger.format("<gray>Click to create a new crate"))
+						.setAction(p -> {
+							p.closeInventory();
+							Chat.requestInput(plugin, p, Messenger.format(
+									"<blue>Enter a name of the new crate (or 'cancel' to cancel):"),
+									input -> {
+										if (plugin.getCrateManager().crateExists(input)) {
+											p.sendMessage(Messenger.format(
+													"<red>A crate with that name already exists."));
+											return false;
+										}
+										return true;
+									}, input -> {
+										plugin.getCrateManager().createCrate(input);
+										p.sendMessage(Messenger.format(
+												"<green>Successfully <blue>created crate <gold>"
+														+ input + "</gold>."));
+
+										p.sendMessage(Messenger.format(
+												"<blue>Click <click:run_command:'/crates edit "
+														+ input
+														+ "'><hover:show_text:'<gray>Click to manage crate'><gold>here</gold></hover></click> to manage the crate."));
+									}, () -> {
+										p.sendMessage(
+												Messenger.format("<red>Crate creation cancelled."));
+									});
+						}));
 		return icons;
 	}
 

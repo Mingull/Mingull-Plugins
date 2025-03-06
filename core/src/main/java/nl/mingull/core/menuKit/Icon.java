@@ -18,7 +18,7 @@ public class Icon {
 	private PlayerClickEvent eventConsumer;
 
 	/**
-	 * Creates an AdvancedIcon with the specified material and a default display name.
+	 * Creates an Icon with the specified material and a default display name.
 	 *
 	 * @param material The material of the item.
 	 */
@@ -31,7 +31,7 @@ public class Icon {
 	}
 
 	/**
-	 * Creates an AdvancedIcon with the specified material and display name.
+	 * Creates an Icon with the specified material and display name.
 	 *
 	 * @param material The material of the item.
 	 * @param name The display name of the item.
@@ -40,11 +40,28 @@ public class Icon {
 		this(material, name, 1);
 	}
 
+	/**
+	 * Creates an Icon with the specified material, display name, and amount.
+	 * 
+	 * @param material The material of the item.
+	 * @param name The display name of the item.
+	 * @param amount The amount of items in the stack.
+	 */
 	public Icon(Material material, Component name, int amount) {
 		this.item = new ItemStack(material);
 		this.meta = this.item.getItemMeta();
 		this.item.setAmount(amount);
 		this.setDisplayName(name);
+	}
+
+	/**
+	 * Creates an Icon from an existing ItemStack.
+	 *
+	 * @param item The item to use as the icon.
+	 */
+	public Icon(ItemStack item) {
+		this.item = item;
+		this.meta = item.getItemMeta();
 	}
 
 	/**
@@ -195,12 +212,19 @@ public class Icon {
 	}
 
 	/**
-	 * Retrieves the amount of items in the stack.
-	 * 
 	 * @return The amount of items in the stack.
 	 */
 	public int getAmount() {
 		return item.getAmount();
+	}
+
+	/**
+	 * Sets the amount of items in the stack.
+	 * 
+	 * @param amount The new amount of items in the stack.
+	 */
+	public void setAmount(int amount) {
+		item.setAmount(amount);
 	}
 
 	public PlayerClickEvent getEventConsumer() {

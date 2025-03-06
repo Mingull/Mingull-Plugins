@@ -179,4 +179,14 @@ public class CrateManager {
 
 		return false;
 	}
+
+	public Crate getCrateAtLocation(Location location) {
+		for (Crate crate : crates.values()) {
+			if (crate.getLocations().stream().anyMatch(loc -> loc.equals(location))) {
+				return crate;
+			}
+		}
+
+		return null;
+	}
 }

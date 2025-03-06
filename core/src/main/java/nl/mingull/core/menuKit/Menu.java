@@ -15,8 +15,8 @@ import nl.mingull.core.menuKit.exceptions.MenuManagerNotCreatedException;
 import nl.mingull.core.utils.Messenger;
 
 public abstract class Menu implements InventoryHolder {
-	private Inventory inventory;
 	private Map<Integer, Icon> icons;
+	protected Inventory inventory;
 	protected PlayerMenuController playerMenuController;
 	protected Player player;
 	protected MenuBorder border;

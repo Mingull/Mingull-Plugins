@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.bukkit.Location;
-import org.bukkit.event.world.PortalCreateEvent.CreateReason;
 
 public class Crate {
 	private final String name;

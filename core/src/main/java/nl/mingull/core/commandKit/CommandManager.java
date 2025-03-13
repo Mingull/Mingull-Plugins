@@ -77,6 +77,13 @@ public class CommandManager implements Manager, CommandExecutor, TabCompleter {
 		return this;
 	}
 
+	public CommandManager registerSubcommands(Subcommand... subcommands) {
+		for (Subcommand subcommand : subcommands) {
+			registerSubcommand(subcommand);
+		}
+		return this;
+	}
+
 	/**
 	 * Assigns a custom command executor for handling the base command.
 	 *
@@ -212,5 +219,10 @@ public class CommandManager implements Manager, CommandExecutor, TabCompleter {
 	@FunctionalInterface
 	public interface SimpleCommandExecutor {
 		boolean onCommand(CommandSender sender, String[] args);
+	}
+
+	@Override
+	public JavaPlugin getPlugin() {
+		return plugin;
 	}
 }

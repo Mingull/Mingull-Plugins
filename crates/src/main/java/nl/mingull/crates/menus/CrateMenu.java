@@ -13,6 +13,7 @@ import nl.mingull.core.menuKit.Rows;
 import nl.mingull.core.utils.Icons;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.managers.KeyManager;
 import nl.mingull.crates.models.Crate;
 
 public class CrateMenu extends Menu {
@@ -65,13 +66,14 @@ public class CrateMenu extends Menu {
 		icons.put(5,
 				Icons.createIcon(Material.TRIAL_KEY, "<blue>Get Key", "<gray>Click to get a key")
 						.setAction(p -> {
-							var key = plugin.getCrateManager().getKey(crate);
+							var key = plugin.getManager(KeyManager.class).getKey(crate);
 							var leftOvers = p.getInventory().addItem(key.getItem());
 							if (!leftOvers.isEmpty()) {
 								leftOvers.values().forEach(
 										item -> p.getWorld().dropItem(p.getLocation(), item));
 							}
-							p.sendMessage(Messenger.format("<green>Received a key for <gold>" + crate.getDisplayName()));
+							p.sendMessage(Messenger.format(
+									"<green>Received a key for <gold>" + crate.getDisplayName()));
 						}));
 		return icons;
 	}

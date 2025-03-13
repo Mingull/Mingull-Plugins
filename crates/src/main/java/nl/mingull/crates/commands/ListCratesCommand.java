@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import nl.mingull.core.commandKit.Subcommand;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.managers.CrateManager;
 import nl.mingull.crates.models.Crate;
 
 public class ListCratesCommand extends Subcommand {
@@ -15,12 +16,12 @@ public class ListCratesCommand extends Subcommand {
 	public ListCratesCommand() {
 		super("list", "List all available crates");
 		addPermission(new Permission("crates.list"));
-		this.plugin = CratesPlugin.getInstance();
+		this.plugin = CratesPlugin.get();
 	}
 
 	@Override
 	public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
-		List<Crate> crates = plugin.getCrateManager().getCrates();
+		List<Crate> crates = plugin.getManager(CrateManager.class).getCrates();
 
 		if (crates.isEmpty()) {
 			sender.sendMessage(Messenger.format("<red>There are no crates available."));

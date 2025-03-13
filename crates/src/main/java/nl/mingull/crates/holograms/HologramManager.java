@@ -2,39 +2,87 @@ package nl.mingull.crates.holograms;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+import nl.mingull.core.utils.Manager;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.managers.CrateManager;
 import nl.mingull.crates.models.Crate;
 
-public class HologramManager implements Listener {
+public class HologramManager implements Manager {
 	private final CratesPlugin plugin;
+	private final Map<Player, Map<Location, CrateHologram>> playerHolograms;
 	private static final double HOLOGRAM_RANGE = 10.0;
-	private final Map<UUID, CrateHologram> holograms;
 
 	public HologramManager(CratesPlugin plugin) {
 		this.plugin = plugin;
-		this.holograms = new HashMap<>();
+		this.playerHolograms = new HashMap<>();
 	}
 
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event) {
-		Location from = event.getFrom();
-		Location to = event.getTo();
 
-		if (to != null && (from.getBlockX() != to.getBlockX() || from.getBlockY() != to.getBlockY()
-				|| from.getBlockZ() != to.getBlockZ())) {
-			for (Crate crate : plugin.getCrateManager().getCrates()) {
-				for (Location loc : crate.getLocations()) {
-					if (loc.getWorld().equals(to.getWorld()) && loc.distance(to) < 10) {
-						if (isInRange(event.getPlayer().getLocation(), loc)) {
-							// show hologram
+	private boolean isInRange(Location playerLoc, Location crateLoc) {
+		return playerLoc.getWorld().equals(crateLoc.getWorld())
+				&& playerLoc.distanceSquared(crateLoc) <= HOLOGRAM_RANGE * HOLOGRAM_RANGE;
+	}
 
+	private void showHologramToPlayer(Player player, Location location, Crate crate) {
+		playerHolograms.putIfAbsent(player, new HashMap<>());
+		Map<Location, CrateHologram> holograms = playerHolograms.get(player);
+
+		if (!holograms.containsKey(location)) {
+			CrateHologram hologram = new CrateHologram(location, crate);
+			holograms.put(location, hologram);
+			hologram.show(player);
+		}
+	}
+
+	private void hideHologramFromPlayer(Player player, Location location) {
+		Map<Location, CrateHologram> holograms = playerHolograms.get(player);
+		if (holograms != null) {
+			CrateHologram hologram = holograms.remove(location);
+			if (hologram != null) {
+				hologram.hide(player);
+			}
+		}
+	}
+
+	public void removeAll() {
+		for (Map<Location, CrateHologram> holograms : playerHolograms.values()) {
+			for (CrateHologram hologram : holograms.values()) {
+				for (Player player : Bukkit.getOnlinePlayers()) {
+					hologram.hide(player);
+				}
+			}
+			holograms.clear();
+		}
+		playerHolograms.clear();
+	}
+
+	public HologramListener getListener() {
+		return new HologramListener();
+	}
+
+	private class HologramListener implements Listener {
+		@EventHandler
+		public void onPlayerMove(PlayerMoveEvent event) {
+			Location from = event.getFrom();
+			Location to = event.getTo();
+
+			if (to != null && (from.getBlockX() != to.getBlockX()
+					|| from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ())) {
+				Player player = event.getPlayer();
+
+				for (Crate crate : plugin.getManager(CrateManager.class).getCrates()) {
+					for (Location location : crate.getLocations()) {
+						if (isInRange(to, location)) {
+							showHologramToPlayer(player, location, crate);
 						} else {
-							// hide hologram if shown
+							hideHologramFromPlayer(player, location);
 						}
 					}
 				}
@@ -42,8 +90,8 @@ public class HologramManager implements Listener {
 		}
 	}
 
-	private boolean isInRange(Location playerLoc, Location crateLoc) {
-		return playerLoc.getWorld().equals(crateLoc.getWorld())
-				&& playerLoc.distanceSquared(crateLoc) <= HOLOGRAM_RANGE * HOLOGRAM_RANGE;
+	@Override
+	public JavaPlugin getPlugin() {
+		return plugin;
 	}
 }

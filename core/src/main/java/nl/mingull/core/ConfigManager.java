@@ -131,4 +131,9 @@ public class ConfigManager implements Manager {
 	public void reloadAllConfigs() {
 		configs.keySet().forEach(this::reloadConfig);
 	}
+
+	@Override
+	public JavaPlugin getPlugin() {
+		return plugin;
+	}
 }

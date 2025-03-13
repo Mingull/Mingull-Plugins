@@ -31,7 +31,7 @@ public class CratesOpeningMenu extends Menu {
 		super(pmc);
 		this.crate = pmc.getData("crate", Crate.class);
 		this.finalReward = pmc.getData("reward", CrateReward.class);
-		this.plugin = CratesPlugin.getInstance();
+		this.plugin = CratesPlugin.get();
 	}
 
 	@Override

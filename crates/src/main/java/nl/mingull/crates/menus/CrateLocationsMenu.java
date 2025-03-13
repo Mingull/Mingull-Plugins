@@ -11,6 +11,8 @@ import nl.mingull.core.menuKit.utils.BorderType;
 import nl.mingull.core.utils.Icons;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.managers.CrateManager;
+import nl.mingull.crates.managers.CrateSelectionManager;
 import nl.mingull.crates.models.Crate;
 
 public class CrateLocationsMenu extends PaginatedMenu {
@@ -28,7 +30,8 @@ public class CrateLocationsMenu extends PaginatedMenu {
 		this.border.setIcon(49, Icons.createHeadIcon(
 				"http://textures.minecraft.net/texture/b056bc1244fcff99344f12aba42ac23fee6ef6e3351d27d273c1572531f",
 				"<green>Add location", "<gray>Click to add a location").setAction(player -> {
-					plugin.getCrateLocationSelector().startSelection(player, crate.getName());
+					plugin.getManager(CrateSelectionManager.class).startSelection(player,
+							crate.getName());
 					player.closeInventory();
 					player.sendMessage(
 							Messenger.format("<green>Right-click a block to add a crate location"));
@@ -57,7 +60,8 @@ public class CrateLocationsMenu extends PaginatedMenu {
 						Messenger.format("<red>Right-Click to remove"));
 				icon.setAction((p, e) -> {
 					if (e.isRightClick()) {
-						plugin.getCrateManager().removeCrateLocation(crate.getName(), location);
+						plugin.getManager(CrateManager.class).removeCrateLocation(crate.getName(),
+								location);
 						p.sendMessage(Messenger.format("<red>Removed location"));
 						super.open(); // Refresh the menu after removing the location
 					} else {

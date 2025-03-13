@@ -13,6 +13,7 @@ import nl.mingull.core.menuKit.utils.BorderType;
 import nl.mingull.core.utils.Icons;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.managers.CrateManager;
 import nl.mingull.crates.models.Crate;
 
 public class CratesListMenu extends PaginatedMenu {
@@ -36,7 +37,7 @@ public class CratesListMenu extends PaginatedMenu {
 	@Override
 	public List<Icon> populateMenu() {
 		List<Icon> icons = new ArrayList<>();
-		for (Crate crate : plugin.getCrateManager().getCrates()) {
+		for (Crate crate : plugin.getManager(CrateManager.class).getCrates()) {
 			icons.add(Icons
 					.createIcon(Material.CHEST, Messenger.format("<gold>" + crate.getDisplayName()),
 							Messenger.format("<gray>Click to view crate details"))

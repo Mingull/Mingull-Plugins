@@ -7,30 +7,29 @@ import java.util.HashMap;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.persistence.PersistentDataType;
-import nl.mingull.core.menuKit.Icon;
-import nl.mingull.core.utils.Messenger;
+import org.bukkit.plugin.java.JavaPlugin;
+import nl.mingull.core.utils.Manager;
 import nl.mingull.crates.CratesPlugin;
 import nl.mingull.crates.models.Crate;
 import nl.mingull.crates.models.CrateReward;
 
-public class CrateManager {
+public class CrateManager implements Manager {
 	private final CratesPlugin plugin;
 	private final File cratesFile;
 	private FileConfiguration cratesConfig;
 	private final HashMap<String, Crate> crates;
-	private final NamespacedKey crateKey;
 
 	public CrateManager(CratesPlugin plugin) {
 		this.plugin = plugin;
 		this.crates = new HashMap<>();
+		if (!plugin.getDataFolder().exists()) {
+			plugin.getDataFolder().mkdirs();
+		}
 		this.cratesFile = new File(plugin.getDataFolder(), "crates.yml");
-		this.crateKey = new NamespacedKey(plugin, "crate_key");
 		this.loadCrates();
 	}
 
@@ -65,6 +64,21 @@ public class CrateManager {
 			crate.removeLocation(location);
 			saveCrates();
 		}
+	}
+
+	public boolean isCrateLocation(Location location) {
+		return crates.values().stream().anyMatch(
+				crate -> crate.getLocations().stream().anyMatch(loc -> loc.equals(location)));
+	}
+
+	public Crate getCrateAtLocation(Location location) {
+		for (Crate crate : crates.values()) {
+			if (crate.getLocations().stream().anyMatch(loc -> loc.equals(location))) {
+				return crate;
+			}
+		}
+
+		return null;
 	}
 
 	private void loadCrates() {
@@ -131,6 +145,10 @@ public class CrateManager {
 		for (var crate : crates.values()) {
 			var crateSection = cratesSection.createSection(crate.getName());
 
+			if (crate.getDisplayName() != crate.getName()) {
+				crateSection.set("displayName", crate.getDisplayName());
+			}
+
 			ConfigurationSection locationsSection = crateSection.createSection("locations");
 			int i = 0;
 			for (Location location : crate.getLocations()) {
@@ -160,33 +178,9 @@ public class CrateManager {
 		}
 	}
 
-	public Icon getKey(Crate crate) {
-		Icon key = new Icon(Material.TRIAL_KEY,
-				Messenger.format("<gold>" + crate.getDisplayName() + "<gray> Key"));
-		key.addMetadata((meta) -> {
-			meta.getPersistentDataContainer().set(crateKey, PersistentDataType.STRING,
-					crate.getName());
-		});
-		return key;
-	}
 
-	public boolean isKeyForCrate(Icon icon, Crate crate) {
-		if (icon.getMaterial() == Material.TRIAL_KEY && icon.hasMetadata() && icon.getMetadata()
-				.getPersistentDataContainer().has(crateKey, PersistentDataType.STRING)) {
-			return icon.getMetadata().getPersistentDataContainer()
-					.get(crateKey, PersistentDataType.STRING).equals(crate.getName());
-		}
-
-		return false;
-	}
-
-	public Crate getCrateAtLocation(Location location) {
-		for (Crate crate : crates.values()) {
-			if (crate.getLocations().stream().anyMatch(loc -> loc.equals(location))) {
-				return crate;
-			}
-		}
-
-		return null;
+	@Override
+	public JavaPlugin getPlugin() {
+		return plugin;
 	}
 }

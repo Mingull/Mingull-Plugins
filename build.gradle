@@ -26,6 +26,9 @@ subprojects {
 
     jar {
         archiveBaseName.set(project.name)
+        manifest {
+            attributes["paperweight-mappings-namespace"] = "mojang"
+        }
     }
 }
 

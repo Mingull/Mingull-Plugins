@@ -1,4 +1,4 @@
-package nl.mingull.crates.listeners;
+package nl.mingull.crates.listeners.crates;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -14,35 +14,49 @@ import nl.mingull.core.menuKit.exceptions.MenuManagerException;
 import nl.mingull.core.menuKit.exceptions.MenuManagerNotCreatedException;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.managers.CrateManager;
+import nl.mingull.crates.managers.KeyManager;
 import nl.mingull.crates.menus.CratesOpeningMenu;
 import nl.mingull.crates.models.Crate;
 import nl.mingull.crates.models.CrateReward;
 
-public class KeyListener implements Listener {
+public class CrateKeyListener implements Listener {
 	private final CratesPlugin plugin;
 
-	public KeyListener(CratesPlugin plugin) {
+	public CrateKeyListener(CratesPlugin plugin) {
 		this.plugin = plugin;
 	}
 
 	@EventHandler
 	public void onCrateKeyUse(PlayerInteractEvent event) {
+		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+			plugin.getLogger().info("onCrateKeyUse: Left click block");
+			return; // Ignore left clicks in this handler
+		}
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return;
+
+		plugin.getLogger().info("onCrateKeyUse: Right click block");
 
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
 		ItemStack item = event.getItem();
 
-		Crate crate = plugin.getCrateManager().getCrateAtLocation(block.getLocation());
+		Crate crate = plugin.getManager(CrateManager.class).getCrateAtLocation(block.getLocation());
 		if (crate == null)
 			return;
 
-		if (item == null)
+		if (item == null) {
+			event.setCancelled(true);
 			return;
-		Icon key = new Icon(item);
-		if (!plugin.getCrateManager().isKeyForCrate(key, crate))
+		}
+
+		Icon key = Icon.from(item);
+		if (!plugin.getManager(KeyManager.class).isKeyForCrate(key, crate)) {
+			plugin.getLogger().info("Item in hand is NOT a key for this crate.");
+			event.setCancelled(true);
 			return;
+		}
 
 		event.setCancelled(true);
 

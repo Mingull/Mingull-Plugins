@@ -3,11 +3,11 @@ package nl.mingull.core.menuKit;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
+import org.bukkit.plugin.java.JavaPlugin;
 import nl.mingull.core.menuKit.exceptions.MenuManagerException;
 import nl.mingull.core.menuKit.exceptions.MenuManagerNotCreatedException;
 import nl.mingull.core.menuKit.listeners.MenuClickListener;
@@ -107,5 +107,10 @@ public class MenuManager implements Manager {
 		if (pmc != null) {
 			controllers.remove(pmc.getOwner());
 		}
+	}
+
+	@Override
+	public JavaPlugin getPlugin() {
+		return null;
 	}
 }

@@ -5,7 +5,6 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.TextComponent;
 import nl.mingull.core.chatKit.Chat;
 import nl.mingull.core.menuKit.Icon;
 import nl.mingull.core.menuKit.Menu;
@@ -15,6 +14,7 @@ import nl.mingull.core.menuKit.Rows;
 import nl.mingull.core.utils.Icons;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.managers.CrateManager;
 
 public class MainMenu extends Menu {
 	private final CratesPlugin plugin;
@@ -59,17 +59,18 @@ public class MainMenu extends Menu {
 								Messenger.format("<gray>Click to create a new crate"))
 						.setAction(p -> {
 							p.closeInventory();
-							Chat.requestInput(plugin, p, Messenger.format(
+							Chat.requestInput(p, Messenger.format(
 									"<blue>Enter a name of the new crate (or 'cancel' to cancel):"),
 									input -> {
-										if (plugin.getCrateManager().crateExists(input)) {
+										if (plugin.getManager(CrateManager.class)
+												.crateExists(input)) {
 											p.sendMessage(Messenger.format(
 													"<red>A crate with that name already exists."));
 											return false;
 										}
 										return true;
 									}, input -> {
-										plugin.getCrateManager().createCrate(input);
+										plugin.getManager(CrateManager.class).createCrate(input);
 										p.sendMessage(Messenger.format(
 												"<green>Successfully <blue>created crate <gold>"
 														+ input + "</gold>."));

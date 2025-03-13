@@ -1,16 +1,16 @@
-repositories{
-    maven { 
-        name = 'codemc'
-        url = uri("https://repo.codemc.io/repository/maven-releases/") 
-    }
-    maven {
-        name = 'codemc'
-        url = uri("https://repo.codemc.io/repository/maven-snapshots/")
-    }
-}
+// repositories{
+//     maven { 
+//         name = 'codemc'
+//         url = uri("https://repo.codemc.io/repository/maven-releases/") 
+//     }
+//     maven {
+//         name = 'codemc'
+//         url = uri("https://repo.codemc.io/repository/maven-snapshots/")
+//     }
+// }
 
 dependencies {
-    compileOnly "com.github.retrooper:packetevents-spigot:2.7.0"
+    // compileOnly "com.github.retrooper:packetevents-spigot:2.7.0"
     compileOnly project(':core')
 }
 

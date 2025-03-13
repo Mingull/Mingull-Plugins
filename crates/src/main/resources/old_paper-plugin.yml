@@ -1,0 +1,15 @@
+name: MingullCrates
+version: 1.0.0
+main: nl.mingull.crates.CratesPlugin
+description: MingullCrates
+author: Mingull
+api-version: "1.21.4"
+bootstrapper: nl.mingull.crates.loaders.CratesBootstrapper
+loader:  nl.mingull.crates.loaders.CratesLoader
+prefix: "MingullCrates"
+website: https://mingull.nl/crates
+dependencies:
+    server:
+        MingullCore:
+          load: BEFORE
+          required: true

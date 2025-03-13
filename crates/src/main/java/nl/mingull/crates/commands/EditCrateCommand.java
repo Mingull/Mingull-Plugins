@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import nl.mingull.core.commandKit.Subcommand;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.managers.CrateManager;
 import nl.mingull.crates.models.Crate;
 import nl.mingull.crates.models.CrateReward;
 
@@ -20,7 +21,7 @@ public class EditCrateCommand extends Subcommand {
 	public EditCrateCommand() {
 		super("edit", "Edit a crate");
 		addPermission(new Permission("crates.edit"));
-		this.plugin = CratesPlugin.getInstance();
+		this.plugin = CratesPlugin.get();
 	}
 
 	@Override
@@ -28,14 +29,14 @@ public class EditCrateCommand extends Subcommand {
 		if (args.length < 3) {
 			sender.sendMessage(Messenger.format(
 					"<blue>Usage: /crates edit <crate_name> <name|displayName|addLocation|removeLocation|addReward|removeReward> <value>"));
-			return false;
+			return true;
 		}
 
 		String crateName = args[0];
-		Crate crate = plugin.getCrateManager().getCrateByName(crateName);
+		Crate crate = plugin.getManager(CrateManager.class).getCrateByName(crateName);
 		if (crate == null) {
 			sender.sendMessage(Messenger.format("<red>Crate not found."));
-			return false;
+			return true;
 		}
 
 		String action = args[1];
@@ -87,12 +88,13 @@ public class EditCrateCommand extends Subcommand {
 	@Override
 	public @Nullable List<String> onTab(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (args.length == 1) {
-			return plugin.getCrateManager().getCrates().stream().map(Crate::getName).toList();
+			return plugin.getManager(CrateManager.class).getCrates().stream().map(Crate::getName)
+					.toList();
 		} else if (args.length == 2) {
 			return List.of("displayName", "addLocation", "removeLocation", "addReward",
 					"removeReward");
 		} else if (args.length == 3) {
-			Crate crate = plugin.getCrateManager().getCrateByName(args[0]);
+			Crate crate = plugin.getManager(CrateManager.class).getCrateByName(args[0]);
 			if (crate == null) {
 				return Collections.emptyList();
 			}

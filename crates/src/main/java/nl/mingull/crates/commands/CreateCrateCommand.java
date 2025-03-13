@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import nl.mingull.core.commandKit.Subcommand;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.managers.CrateManager;
 
 public class CreateCrateCommand extends Subcommand {
 	private final CratesPlugin plugin;
@@ -14,7 +15,7 @@ public class CreateCrateCommand extends Subcommand {
 	public CreateCrateCommand() {
 		super("create", "Create a new crate");
 		addPermission(new Permission("crates.create"));
-		this.plugin = CratesPlugin.getInstance();
+		this.plugin = CratesPlugin.get();
 	}
 
 	@Override
@@ -31,12 +32,12 @@ public class CreateCrateCommand extends Subcommand {
 		}
 
 		String crateName = args[0];
-		if (plugin.getCrateManager().crateExists(crateName)) {
+		if (plugin.getManager(CrateManager.class).crateExists(crateName)) {
 			player.sendMessage(Messenger.format("<red>A crate with that name already exists!"));
 			return true;
 		}
 
-		plugin.getCrateManager().createCrate(crateName);
+		plugin.getManager(CrateManager.class).createCrate(crateName);
 		player.sendMessage(
 				Messenger.format("<green>Successfully created crate <gold>" + crateName));
 

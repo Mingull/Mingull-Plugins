@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.kyori.adventure.text.Component;
@@ -16,6 +15,7 @@ import nl.mingull.core.menuKit.utils.BorderType;
 import nl.mingull.core.utils.Icons;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.managers.CrateManager;
 import nl.mingull.crates.models.Crate;
 import nl.mingull.crates.models.CrateReward;
 
@@ -89,7 +89,7 @@ public class CrateRewardMenu extends Menu {
 		if (crate != null) {
 			crate.getRewards().clear();
 			rewards.forEach(crate::addReward);
-			plugin.getCrateManager().saveCrates();
+			plugin.getManager(CrateManager.class).saveCrates();
 			player.sendMessage(Messenger.format("<green>Rewards saved!"));
 		}
 	}

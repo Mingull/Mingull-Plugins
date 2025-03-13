@@ -2,12 +2,9 @@ package nl.mingull.core.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class Messenger {
 	private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
-	private static final LegacyComponentSerializer AMPERSAND_SERIALIZER =
-			LegacyComponentSerializer.legacyAmpersand();
 
 	/**
 	 * Formats a string into a Component, supporting both MiniMessage and legacy formatting.

@@ -4,7 +4,7 @@ main: nl.mingull.crates.CratesPlugin
 description: MingullCrates
 author: Mingull
 api-version: "1.21.4"
-prefix: "Crates"
+prefix: "MingullCrates"
 website: https://mingull.nl/crates
 depend:
     - MingullCore

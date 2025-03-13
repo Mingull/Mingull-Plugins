@@ -1,48 +1,45 @@
 package nl.mingull.crates.holograms;
 
-import java.util.UUID;
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
-import com.github.retrooper.packetevents.protocol.player.User;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
-import io.github.retrooper.packetevents.util.SpigotConversionUtil;
-import io.github.retrooper.packetevents.util.SpigotReflectionUtil;
+import org.bukkit.entity.TextDisplay;
+import nl.mingull.core.utils.Messenger;
+import nl.mingull.crates.CratesPlugin;
 import nl.mingull.crates.models.Crate;
 
 public class CrateHologram {
+	private final CratesPlugin plugin;
 	private final Location location;
 	private final Crate crate;
-	private int entityId;
+	private TextDisplay hologram;
 
 	public CrateHologram(Location location, Crate crate) {
-		this.location = location.clone().add(.5, .5, .5);
+		this.plugin = CratesPlugin.get();
+		this.location = location.clone().add(.5, 1.5, .5);
 		this.crate = crate;
-		this.entityId = SpigotReflectionUtil.generateEntityId();
 	}
 
 	public void show(Player player) {
-		User user = PacketEvents.getAPI().getPlayerManager().getUser(player);
-		if (user == null)
-			return;
+		this.hologram = location.getWorld().spawn(location, TextDisplay.class, display -> {
+			display.text(Messenger.format(crate.getDisplayName()
+					+ "<newline><gray>Right-click to open<newline><yellow>Click to preview"));
+			display.setBillboard(Display.Billboard.CENTER);
+			display.setSeeThrough(false);
+			display.setBackgroundColor(Color.fromARGB(0, 0, 0, 0));
+			display.setDefaultBackground(false);
+			display.setShadowed(true);
+			display.setPersistent(false);
+		});
 
-		WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(this.entityId,
-				UUID.randomUUID(), EntityTypes.ARMOR_STAND,
-				SpigotConversionUtil.fromBukkitLocation(location), 0, 0, null);
-
-		user.sendPacket(spawnPacket);
+		player.showEntity(plugin, hologram);
 	}
 
 	public void hide(Player player) {
-		User user = PacketEvents.getAPI().getPlayerManager().getUser(player);
-		if (user == null)
-			return;
-
-		WrapperPlayServerDestroyEntities destroyPacket =
-				new WrapperPlayServerDestroyEntities(this.entityId);
-
-		user.sendPacket(destroyPacket);
+		if (hologram != null) {
+			player.hideEntity(plugin, hologram);
+			hologram = null;
+		}
 	}
 }

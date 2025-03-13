@@ -27,7 +27,7 @@ public class Icon {
 	}
 
 	public Icon(Material material, int amount) {
-		this(material, Component.text(material.toString()), amount);
+		this(material, Component.text(material.name()), amount);
 	}
 
 	/**
@@ -54,14 +54,18 @@ public class Icon {
 		this.setDisplayName(name);
 	}
 
+	private Icon(ItemStack item) {
+		this.item = item;
+		this.meta = item.getItemMeta();
+	}
+
 	/**
 	 * Creates an Icon from an existing ItemStack.
 	 *
 	 * @param item The item to use as the icon.
 	 */
-	public Icon(ItemStack item) {
-		this.item = item;
-		this.meta = item.getItemMeta();
+	public static Icon from(ItemStack item) {
+		return new Icon(item);
 	}
 
 	/**

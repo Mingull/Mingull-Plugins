@@ -1,7 +1,6 @@
 package nl.mingull.crates.listeners.crates;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -16,6 +15,7 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+
 import nl.mingull.core.menuKit.Icon;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;

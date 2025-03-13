@@ -1,6 +1,8 @@
 # ignore all useless files
 .vscode
 format.yml
+*/bin
+
 # Ignore Gradle project-specific cache directory
 .gradle
 

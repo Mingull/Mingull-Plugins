@@ -6,8 +6,8 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.Action;
+
 import nl.mingull.crates.models.Crate;
-import nl.mingull.crates.models.CrateReward;
 
 public class CrateAccessEvent extends Event implements Cancellable {
 	private static final HandlerList handlers = new HandlerList();
@@ -30,6 +30,10 @@ public class CrateAccessEvent extends Event implements Cancellable {
 
 	public Crate getCrate() {
 		return crate;
+	}
+
+	public Location getLocation() {
+		return location;
 	}
 
 	public Action getAction() {

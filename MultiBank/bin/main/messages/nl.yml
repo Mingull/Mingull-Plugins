@@ -1,6 +1,0 @@
-insufficient-funds: "&cJe hebt niet genoeg geld om deze transactie te voltooien!"
-deposit-success: "&aJe hebt {amount} succesvol in je bank gestort!"
-withdraw-success: "&aJe hebt {amount} succesvol uit je bank opgenomen!"
-interest-earned: "&aJe hebt {amount} aan rente verdiend!"
-loan-taken: "&aJe hebt een lening van {amount} afgesloten. Betaal het op tijd terug!"
-loan-repaid: "&aLeningstermijn van {amount} is afgetrokken!"

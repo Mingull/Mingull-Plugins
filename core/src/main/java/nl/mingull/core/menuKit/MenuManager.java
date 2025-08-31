@@ -8,14 +8,19 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import nl.mingull.core.managerKit.Manager;
 import nl.mingull.core.menuKit.exceptions.MenuManagerException;
 import nl.mingull.core.menuKit.exceptions.MenuManagerNotCreatedException;
 import nl.mingull.core.menuKit.listeners.MenuClickListener;
-import nl.mingull.core.utils.Manager;
 
-public class MenuManager implements Manager {
+public class MenuManager extends Manager {
 	private static Map<Player, PlayerMenuController> controllers = new HashMap<>();
 	private static Boolean isCreated;
+
+	public MenuManager(JavaPlugin plugin) {
+		super(plugin);
+	}
 
 	private static void registerListener(Plugin plugin) {
 		boolean isAlreadyRegistered = false;
@@ -49,7 +54,7 @@ public class MenuManager implements Manager {
 	/**
 	 * Open a menu for a player
 	 * 
-	 * @param menu The menu class to open
+	 * @param menu   The menu class to open
 	 * @param player The player to open the menu for
 	 * @throws MenuManagerException
 	 * @throws MenuManagerNotCreatedException
@@ -107,10 +112,5 @@ public class MenuManager implements Manager {
 		if (pmc != null) {
 			controllers.remove(pmc.getOwner());
 		}
-	}
-
-	@Override
-	public JavaPlugin getPlugin() {
-		return null;
 	}
 }

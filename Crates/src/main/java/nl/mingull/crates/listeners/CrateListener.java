@@ -1,4 +1,4 @@
-package nl.mingull.crates.listeners.crates;
+package nl.mingull.crates.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

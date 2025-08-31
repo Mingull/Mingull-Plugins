@@ -1,4 +1,4 @@
-package nl.mingull.crates.holograms;
+package nl.mingull.crates.models;
 
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
-import nl.mingull.crates.models.Crate;
 
 public class CrateHologram {
 	private final CratesPlugin plugin;

@@ -5,26 +5,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-import nl.mingull.core.utils.Manager;
+
+import nl.mingull.core.managerKit.Manager;
 import nl.mingull.crates.CratesPlugin;
 import nl.mingull.crates.models.Crate;
 import nl.mingull.crates.models.CrateReward;
 
-public class CrateManager implements Manager {
-	private final CratesPlugin plugin;
+public class CrateManager extends Manager {
 	private final File cratesFile;
 	private FileConfiguration cratesConfig;
 	private final HashMap<String, Crate> crates;
 
 	public CrateManager(CratesPlugin plugin) {
-		this.plugin = plugin;
+		super(plugin);
 		this.crates = new HashMap<>();
 		if (!plugin.getDataFolder().exists()) {
 			plugin.getDataFolder().mkdirs();
@@ -67,8 +67,8 @@ public class CrateManager implements Manager {
 	}
 
 	public boolean isCrateLocation(Location location) {
-		return crates.values().stream().anyMatch(
-				crate -> crate.getLocations().stream().anyMatch(loc -> loc.equals(location)));
+		return crates.values().stream()
+				.anyMatch(crate -> crate.getLocations().stream().anyMatch(loc -> loc.equals(location)));
 	}
 
 	public Crate getCrateAtLocation(Location location) {
@@ -86,7 +86,7 @@ public class CrateManager implements Manager {
 			try {
 				cratesFile.createNewFile();
 			} catch (IOException ex) {
-				this.plugin.getLogger().severe("Could not create crates.yml file!");
+				this.getPlugin().getLogger().severe("Could not create crates.yml file!");
 				ex.printStackTrace();
 			}
 		}
@@ -110,7 +110,7 @@ public class CrateManager implements Manager {
 			if (locationsSection != null) {
 				for (String key : locationsSection.getKeys(false)) {
 					String worldName = locationsSection.getString(key + ".world");
-					World world = plugin.getServer().getWorld(worldName);
+					World world = getPlugin().getServer().getWorld(worldName);
 					if (world != null) {
 						double x = locationsSection.getDouble(key + ".x");
 						double y = locationsSection.getDouble(key + ".y");
@@ -135,7 +135,7 @@ public class CrateManager implements Manager {
 			crates.put(name, crate);
 		}
 
-		this.plugin.getLogger().info("Loaded " + crates.size() + " crates!");
+		this.getPlugin().getLogger().info("Loaded " + crates.size() + " crates!");
 	}
 
 	public void saveCrates() {
@@ -152,8 +152,7 @@ public class CrateManager implements Manager {
 			ConfigurationSection locationsSection = crateSection.createSection("locations");
 			int i = 0;
 			for (Location location : crate.getLocations()) {
-				ConfigurationSection locationSection =
-						locationsSection.createSection(String.valueOf(i++));
+				ConfigurationSection locationSection = locationsSection.createSection(String.valueOf(i++));
 				locationSection.set("world", location.getWorld().getName());
 				locationSection.set("x", location.getX());
 				locationSection.set("y", location.getY());
@@ -163,8 +162,7 @@ public class CrateManager implements Manager {
 			ConfigurationSection rewardsSection = crateSection.createSection("rewards");
 			for (int j = 0; j < crate.getRewards().size(); j++) {
 				CrateReward reward = crate.getRewards().get(j);
-				ConfigurationSection rewardSection =
-						rewardsSection.createSection(String.valueOf(j));
+				ConfigurationSection rewardSection = rewardsSection.createSection(String.valueOf(j));
 				rewardSection.set("material", reward.getMaterial().name());
 				rewardSection.set("amount", reward.getAmount());
 				rewardSection.set("weight", reward.getWeight());
@@ -178,9 +176,9 @@ public class CrateManager implements Manager {
 		}
 	}
 
-
 	@Override
-	public JavaPlugin getPlugin() {
-		return plugin;
+	@SuppressWarnings("unchecked")
+	public CratesPlugin getPlugin() {
+		return (CratesPlugin) super.getPlugin();
 	}
 }

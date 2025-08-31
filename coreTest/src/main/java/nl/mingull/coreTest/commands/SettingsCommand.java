@@ -26,8 +26,7 @@ public class SettingsCommand extends Subcommand {
 		// this.menu.fill(Icons.GlassPane.StainedGray);
 
 		// Load and set the initial debug mode icon
-		boolean isDebugEnabled =
-				CoreTestPlugin.getConfigManager().getConfig("config").getBoolean("debugger");
+		boolean isDebugEnabled = CoreTestPlugin.getConfigManager().getConfig("config").getBoolean("debugger");
 		updateDebugIcon(isDebugEnabled);
 	}
 
@@ -36,8 +35,7 @@ public class SettingsCommand extends Subcommand {
 	}
 
 	private AdvancedIcon createDebugModeIcon(boolean isDebugEnabled) {
-		AdvancedIcon icon =
-				new AdvancedIcon(Material.REDSTONE, Messenger.format("<red>Debug mode</red>"));
+		AdvancedIcon icon = new AdvancedIcon(Material.REDSTONE, Messenger.format("<red>Debug mode</red>"));
 		icon.setLore(
 				Messenger.format("<gray>Setting: "
 						+ (isDebugEnabled ? "<green>Enabled" : "<red>Disabled")),

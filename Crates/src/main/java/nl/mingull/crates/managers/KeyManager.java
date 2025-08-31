@@ -4,19 +4,19 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import nl.mingull.core.managerKit.Manager;
 import nl.mingull.core.menuKit.Icon;
-import nl.mingull.core.utils.Manager;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.CratesPlugin;
 import nl.mingull.crates.models.Crate;
 
-public class KeyManager implements Manager {
-	private CratesPlugin plugin;
+public class KeyManager extends Manager {
 	private final NamespacedKey crateKey;
 
 	public KeyManager(CratesPlugin plugin) {
-		this.plugin = plugin;
-		this.crateKey = new NamespacedKey(this.plugin, "crate_key");
+		super(plugin);
+		this.crateKey = new NamespacedKey(plugin, "crate_key");
 	}
 
 	public Icon getKey(Crate crate) {
@@ -40,7 +40,8 @@ public class KeyManager implements Manager {
 	}
 
 	@Override
-	public JavaPlugin getPlugin() {
-		return plugin;
+	@SuppressWarnings("unchecked")
+	public CratesPlugin getPlugin() {
+		return (CratesPlugin) super.getPlugin();
 	}
 }

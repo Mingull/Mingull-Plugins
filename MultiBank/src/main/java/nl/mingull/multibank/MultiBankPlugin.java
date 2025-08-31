@@ -1,6 +1,7 @@
 package nl.mingull.multibank;
 
 import java.util.Arrays;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,8 +30,7 @@ public class MultiBankPlugin extends JavaPlugin implements Listener {
         commandManager.registerSubcommand(new BankCommand());
         commandManager.registerSubcommand(new ReloadCommand());
         commandManager.registerSubcommand(new HelpCommand());
-        commandManager
-                .setExecutor((sender, _c, _a, args) -> new HelpCommand().execute(sender, args));
+        commandManager.setExecutor((sender,args) -> new HelpCommand().execute(sender, args));
 
         getLogger().info("MultiBank plugin has been enabled!");
     }

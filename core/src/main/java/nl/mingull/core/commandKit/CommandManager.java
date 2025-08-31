@@ -7,15 +7,16 @@ import org.bukkit.command.*;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.kyori.adventure.text.Component;
-import nl.mingull.core.utils.Manager;
+import nl.mingull.core.managerKit.Manager;
 import nl.mingull.core.utils.Messenger;
 
 /**
- * Manages a primary command and its associated subcommands. This class serves as a centralized
- * handler for executing commands, managing permissions, and providing tab completion.
+ * Manages a primary command and its associated subcommands. This class serves
+ * as a centralized
+ * handler for executing commands, managing permissions, and providing tab
+ * completion.
  */
-public class CommandManager implements Manager, CommandExecutor, TabCompleter {
-	private final JavaPlugin plugin;
+public class CommandManager extends Manager implements CommandExecutor, TabCompleter {
 	private final PluginCommand command;
 	private final String commandName;
 	private final List<String> aliases;
@@ -28,9 +29,10 @@ public class CommandManager implements Manager, CommandExecutor, TabCompleter {
 	/**
 	 * Constructs a new CommandManager for handling a specific command.
 	 *
-	 * @param plugin The plugin instance that owns the command.
+	 * @param plugin      The plugin instance that owns the command.
 	 * @param commandName The primary command name as defined in plugin.yml.
-	 * @throws IllegalArgumentException If the command is not registered in plugin.yml.
+	 * @throws IllegalArgumentException If the command is not registered in
+	 *                                  plugin.yml.
 	 */
 	public CommandManager(JavaPlugin plugin, String commandName) {
 		this(plugin, commandName, List.of());
@@ -39,17 +41,18 @@ public class CommandManager implements Manager, CommandExecutor, TabCompleter {
 	/**
 	 * Constructs a new CommandManager with support for aliases.
 	 *
-	 * @param plugin The plugin instance that owns the command.
+	 * @param plugin      The plugin instance that owns the command.
 	 * @param commandName The primary command name as defined in plugin.yml.
-	 * @param aliases A list of alternative names (aliases) for the command.
-	 * @throws IllegalArgumentException If the command is not registered in plugin.yml.
+	 * @param aliases     A list of alternative names (aliases) for the command.
+	 * @throws IllegalArgumentException If the command is not registered in
+	 *                                  plugin.yml.
 	 */
 	public CommandManager(JavaPlugin plugin, String commandName, List<String> aliases) {
-		this.plugin = Objects.requireNonNull(plugin, "Plugin cannot be null.");
+		super(plugin);
 		this.commandName = Objects.requireNonNull(commandName, "Command name cannot be null.");
 		this.aliases = aliases != null ? List.copyOf(aliases) : List.of();
 
-		this.command = Objects.requireNonNull(this.plugin.getCommand(commandName),
+		this.command = Objects.requireNonNull(getPlugin().getCommand(commandName),
 				"Command '" + commandName + "' is not registered in plugin.yml");
 
 		command.setExecutor(this);
@@ -120,38 +123,45 @@ public class CommandManager implements Manager, CommandExecutor, TabCompleter {
 	 *
 	 * @param permission The permission node required to execute the main command.
 	 */
-	public void setPermission(Permission permission) {
+	public CommandManager setPermission(Permission permission) {
 		this.mainPermission = permission;
 		this.command.setPermission(permission.getName());
+		return this;
 	}
 
-
 	/**
-	 * Sets a global override permission that allows execution of all subcommands, regardless of
+	 * Sets a global override permission that allows execution of all subcommands,
+	 * regardless of
 	 * individual subcommand permissions.
 	 *
-	 * @param permission The permission required to bypass subcommand-specific permissions.
+	 * @param permission The permission required to bypass subcommand-specific
+	 *                   permissions.
 	 */
-	public void setOverridePermission(Permission permission) {
+	public CommandManager setOverridePermission(Permission permission) {
 		this.overridePermission = permission;
+		return this;
 	}
 
 	/**
-	 * Defines a custom permission message sent when a player lacks the required permission.
+	 * Defines a custom permission message sent when a player lacks the required
+	 * permission.
 	 *
 	 * @param permissionMessage The message to display when permission is denied.
 	 */
-	public void setPermissionMessage(Component permissionMessage) {
+	public CommandManager setPermissionMessage(Component permissionMessage) {
 		this.permissionMessage = permissionMessage;
+		return this;
 	}
 
 	/**
 	 * Defines a custom permission message using a formatted string.
 	 *
-	 * @param permissionMessage The formatted message to display when permission is denied.
+	 * @param permissionMessage The formatted message to display when permission is
+	 *                          denied.
 	 */
-	public void setPermissionMessage(String permissionMessage) {
+	public CommandManager setPermissionMessage(String permissionMessage) {
 		this.permissionMessage = Messenger.format(permissionMessage);
+		return this;
 	}
 
 	@Override
@@ -195,7 +205,6 @@ public class CommandManager implements Manager, CommandExecutor, TabCompleter {
 		return subCommand.execute(sender, Arrays.copyOfRange(args, 1, args.length));
 	}
 
-
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias,
 			String[] args) {
@@ -219,10 +228,5 @@ public class CommandManager implements Manager, CommandExecutor, TabCompleter {
 	@FunctionalInterface
 	public interface SimpleCommandExecutor {
 		boolean onCommand(CommandSender sender, String[] args);
-	}
-
-	@Override
-	public JavaPlugin getPlugin() {
-		return plugin;
 	}
 }

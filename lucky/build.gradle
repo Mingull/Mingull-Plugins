@@ -1,0 +1,10 @@
+dependencies {
+    compileOnly project(':core')
+}
+
+jar {
+    archiveBaseName.set('lucky')
+}
+
+group = 'nl.mingull.lucky'
+version = '1.0.0'

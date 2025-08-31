@@ -1,29 +1,28 @@
-package nl.mingull.crates.holograms;
+package nl.mingull.crates.managers;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-import nl.mingull.core.utils.Manager;
-import nl.mingull.crates.CratesPlugin;
-import nl.mingull.crates.managers.CrateManager;
-import nl.mingull.crates.models.Crate;
 
-public class HologramManager implements Manager {
-	private final CratesPlugin plugin;
+import nl.mingull.core.managerKit.Manager;
+import nl.mingull.crates.CratesPlugin;
+import nl.mingull.crates.models.Crate;
+import nl.mingull.crates.models.CrateHologram;
+
+public class HologramManager extends Manager {
 	private final Map<Player, Map<Location, CrateHologram>> playerHolograms;
 	private static final double HOLOGRAM_RANGE = 10.0;
 
 	public HologramManager(CratesPlugin plugin) {
-		this.plugin = plugin;
+		super(plugin);
 		this.playerHolograms = new HashMap<>();
 	}
-
 
 	private boolean isInRange(Location playerLoc, Location crateLoc) {
 		return playerLoc.getWorld().equals(crateLoc.getWorld())
@@ -77,7 +76,7 @@ public class HologramManager implements Manager {
 					|| from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ())) {
 				Player player = event.getPlayer();
 
-				for (Crate crate : plugin.getManager(CrateManager.class).getCrates()) {
+				for (Crate crate : ((CratesPlugin) getPlugin()).getManager(CrateManager.class).getCrates()) {
 					for (Location location : crate.getLocations()) {
 						if (isInRange(to, location)) {
 							showHologramToPlayer(player, location, crate);
@@ -91,7 +90,8 @@ public class HologramManager implements Manager {
 	}
 
 	@Override
-	public JavaPlugin getPlugin() {
-		return plugin;
+	@SuppressWarnings("unchecked")
+	public CratesPlugin getPlugin() {
+		return (CratesPlugin) super.getPlugin();
 	}
 }

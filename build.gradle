@@ -16,12 +16,14 @@ subprojects {
     }
 
     dependencies {
-        compileOnly 'io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT'
-        implementation 'net.kyori:adventure-text-minimessage:4.18.0'
+        compileOnly 'io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT'
+        implementation "net.kyori:adventure-api:4.24.0"
     }
 
     java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(23))
+        }
     }
 
     jar {
@@ -40,7 +42,7 @@ tasks.named('jar') {
 // Create a task to copy built JARs from all subprojects to the 'dist' folder
 task copyJars(type: Copy) {
     from subprojects.collect { it.tasks.named('jar') }
-    into 'dist'
+    into 'C:\\Users\\niels\\Desktop\\development\\servers\\server-planetnode\\plugins'
 }
 
 tasks.named('build') {

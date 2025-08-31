@@ -3,13 +3,14 @@ package nl.mingull.coreTest;
 import java.util.Arrays;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
-import nl.mingull.core.ConfigManager;
+
 import nl.mingull.core.commandKit.CommandManager;
+import nl.mingull.core.configKit.ConfigManager;
 import nl.mingull.core.menuKit.MenuManager;
 import nl.mingull.coreTest.commands.ArgumentTestCommand;
 import nl.mingull.coreTest.commands.HelpCommand;
@@ -41,8 +42,7 @@ public class CoreTestPlugin extends JavaPlugin implements Listener {
 		commandManager.registerSubcommand(new SettingsCommand());
 		commandManager.registerSubcommand(new ManageCommand());
 		commandManager.registerSubcommand(new HelpCommand());
-		commandManager.setExecutor((sender, args) -> new HelpCommand().execute(sender, args));
-
+		commandManager.setExecutor((sender,args) -> new HelpCommand().execute(sender, args));
 
 		this.getLogger().info("Mingull Core Test has been enabled!");
 	}
@@ -56,11 +56,11 @@ public class CoreTestPlugin extends JavaPlugin implements Listener {
 
 	@Override
 	public Logger getLogger() {
-		if (!this.isEnabled()) {
+		if (!this.isEnabled()){
 			return super.getLogger();
-		} else if (this.getConfig().getBoolean("debugger")) {
+		} else if (this.getConfig().getBoolean("debugger")){
 			return super.getLogger();
-		} else {
+		} else{
 			return null;
 		}
 	}

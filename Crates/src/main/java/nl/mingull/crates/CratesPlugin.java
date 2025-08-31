@@ -11,17 +11,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+
+import nl.mingull.core.chatKit.ChatManager;
 import nl.mingull.core.commandKit.CommandManager;
+import nl.mingull.core.configKit.Config;
+import nl.mingull.core.configKit.ConfigManager;
+import nl.mingull.core.managerKit.Manager;
 import nl.mingull.core.menuKit.MenuManager;
-import nl.mingull.core.utils.Manager;
 import nl.mingull.core.utils.Messenger;
 import nl.mingull.crates.commands.CreateCrateCommand;
 import nl.mingull.crates.commands.EditCrateCommand;
 import nl.mingull.crates.commands.ListCratesCommand;
-import nl.mingull.crates.holograms.HologramManager;
-import nl.mingull.crates.listeners.crates.CrateKeyListener;
-import nl.mingull.crates.listeners.crates.CrateListener;
+import nl.mingull.crates.configs.DefaultConfig;
+import nl.mingull.crates.listeners.CrateListener;
 import nl.mingull.crates.managers.CrateSelectionManager;
+import nl.mingull.crates.managers.HologramManager;
 import nl.mingull.crates.managers.CrateManager;
 import nl.mingull.crates.managers.KeyManager;
 import nl.mingull.crates.managers.UpdateManager;
@@ -33,6 +37,7 @@ public class CratesPlugin extends JavaPlugin {
 
 	@Override
 	public void onLoad() {
+		ConfigManager.settings(this);
 	}
 
 	@Override
@@ -42,32 +47,32 @@ public class CratesPlugin extends JavaPlugin {
 		var hologramManager = new HologramManager(this);
 		var CrateSelectionManager = new CrateSelectionManager(this);
 
-		var commandManager = new CommandManager(this, "crates", Arrays.asList("crate"));
-		commandManager.setPermission(new Permission("crates.use"));
-		commandManager.setOverridePermission(new Permission("crates.*"));
-		commandManager
-				.setPermissionMessage("<red>You do not have permission to execute this command!");
-		commandManager.registerSubcommands(new ListCratesCommand(), new CreateCrateCommand(),
-				new EditCrateCommand());
-		commandManager.setExecutor(this);
+		var commandManager = new CommandManager(this, "crates", Arrays.asList("crate"))
+				.setPermission(new Permission("crates.use"))
+				.setOverridePermission(new Permission("crates.*"))
+				.setPermissionMessage("<red>You do not have permission to execute this command!")
+				.registerSubcommands(new ListCratesCommand(), new CreateCrateCommand(), new EditCrateCommand())
+				.setExecutor(this);
+		var configManager = new ConfigManager(this).registerConfig(DefaultConfig::new).load();
 
-		registerEvents(new CrateKeyListener(this), new CrateListener(this),
-				hologramManager.getListener(), CrateSelectionManager.getListener());
-		registerManagers(new CrateManager(this), new KeyManager(this), hologramManager, commandManager,
-				CrateSelectionManager, new UpdateManager(this));
+		registerEvents(new CrateListener(this), hologramManager.getListener(),
+				CrateSelectionManager.getListener());
+		registerManagers(new ChatManager(this), commandManager,
+				configManager, new CrateManager(this),
+				CrateSelectionManager, hologramManager,
+				new KeyManager(this), new UpdateManager(this));
 	}
 
 	@Override
 	public void onDisable() {
-		// PacketEvents.getAPI().terminate();
 	}
 
 	@Override
-	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
-			@NotNull String label, @NotNull String @NotNull [] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+			@NotNull String @NotNull [] args) {
 		if (!(sender instanceof Player player)) {
-			sender.sendMessage(
-					Messenger.format("<red>This command can only be executed by players!"));
+			sender.sendMessage(Messenger
+					.format("<red>This command can only be executed by players!"));
 			return true;
 		}
 
@@ -104,6 +109,10 @@ public class CratesPlugin extends JavaPlugin {
 		return null;
 	}
 
+	public <T extends Config> T getConfig(Class<T> clazz) {
+		return getManager(ConfigManager.class).getConfig(clazz);
+	}
+
 	// private void displayIntro() {
 	// UpdateManager updateManager = getManager(UpdateManager.class);
 	// CacheManager cacheManager = getManager(CacheManager.class);
@@ -124,7 +133,8 @@ public class CratesPlugin extends JavaPlugin {
 	// .sendMessage(ChatColor.RED + "Update Available (v"
 	// + updateManager.getNewVersion() + "). Download here: "
 	// + updateManager.getResourceURL() + ChatColor.DARK_GRAY + ".");
-	// Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "Loaded " + ChatColor.YELLOW
+	// Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "Loaded " +
+	// ChatColor.YELLOW
 	// + cacheManager.getCache().size() + ChatColor.DARK_GRAY + " crate(s).");
 	// if (isHologramPluginDetected(HologramPlugin.DECENT_HOLOGRAMS))
 	// Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "Detected "
@@ -138,4 +148,3 @@ public class CratesPlugin extends JavaPlugin {
 	// Bukkit.getConsoleSender().sendMessage("");
 	// }
 }
-

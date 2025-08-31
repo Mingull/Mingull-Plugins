@@ -7,7 +7,8 @@ public class Messenger {
 	private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 
 	/**
-	 * Formats a string into a Component, supporting both MiniMessage and legacy formatting.
+	 * Formats a string into a Component, supporting both MiniMessage and legacy
+	 * formatting.
 	 *
 	 * @param message the input string (MiniMessage or legacy formatted)
 	 * @return the formatted Component
@@ -15,7 +16,6 @@ public class Messenger {
 	public static Component format(String message) {
 		return MINI_MESSAGE.deserialize(convertLegacy("<!italic>" + message));
 	}
-
 
 	/**
 	 * Serializes a Component into a MiniMessage string.

@@ -1,18 +1,19 @@
 package nl.mingull.crates.managers;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import nl.mingull.core.utils.Manager;
+
+import nl.mingull.core.managerKit.Manager;
 import nl.mingull.crates.CratesPlugin;
 
-public class UpdateManager implements Manager {
-	private final CratesPlugin plugin;
-
-	public UpdateManager(CratesPlugin plugin) {
-		this.plugin = plugin;
+public class UpdateManager extends Manager {
+	public UpdateManager(JavaPlugin plugin) {
+		super(plugin);
 	}
 
 	@Override
-	public JavaPlugin getPlugin() {
-		return plugin;
+	@SuppressWarnings("unchecked")
+	public CratesPlugin getPlugin() {
+		return (CratesPlugin) super.getPlugin();
 	}
+
 }

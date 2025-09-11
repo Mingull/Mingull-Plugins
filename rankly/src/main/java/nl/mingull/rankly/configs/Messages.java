@@ -20,7 +20,7 @@ public class Messages {
 		this.config = YamlConfiguration.loadConfiguration(file);
 		this.config.options().setHeader(List.of(
 				"============================================================",
-				"  Lucky Plugin - Messages Configuration",
+				"  Rankly Plugin - Messages Configuration",
 				"",
 				"  This file contains all messages used by the plugin.",
 				"",

@@ -1,0 +1,20 @@
+name: rankly
+version: 1.0.0
+main: nl.mingull.rankly.RanklyPlugin
+author: Mingull
+description: Rankly is a plugin that provides a ranking system for players.
+api-version: "1.21.8"
+website: https://mingull.nl/rankly
+
+dependencies:
+    server:
+        PlaceholderAPI:
+            load: BEFORE
+            required: true
+
+commands:
+    rankly:
+        description: Main command for the Rankly plugin.
+        usage: /<command>
+        permission: rankly.use
+        permission-message: You do not have permission to use this command.

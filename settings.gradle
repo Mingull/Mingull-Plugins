@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = 'MingullPlugins'
-include 'core', 'coreTest', 'MultiBank', 'Crates', 'Lucky'
+include 'core', 'Crates', 'rankly', 'skywars'

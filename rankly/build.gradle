@@ -1,0 +1,17 @@
+repositories {
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+}
+
+dependencies {
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+}
+
+
+jar {
+    archiveBaseName.set('rankly')
+}
+
+group = 'nl.mingull.rankly'
+version = '1.0.0'

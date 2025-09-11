@@ -21,7 +21,7 @@ public class CreateGameArgument implements ArgumentExecutor {
     @Override
     public void execute(Player player, String[] args) {
         if (args.length < 2) {
-            player.sendMessage(messages.getPrefix().append(Component.text("Usage: /lucky " + getUsage())));
+            player.sendMessage(messages.getPrefix().append(Component.text("Usage: /skywars " + getUsage())));
             return;
         }
 

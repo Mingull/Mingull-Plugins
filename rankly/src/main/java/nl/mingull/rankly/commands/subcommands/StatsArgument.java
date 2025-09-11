@@ -44,7 +44,7 @@ public class StatsArgument implements SubcommandTabExecutor {
             }
         }
 
-        PlayerStat stats = statsMap.get(target.getUniqueId());
+        PlayerStats stats = statsMap.get(target.getUniqueId());
         player.sendMessage(
                 messages.getMessage(MessageType.PLAYER_STATS, Placeholder.unparsed("player", target.getName()),
                         Placeholder.unparsed("kills", String.valueOf(stats.getKills())),

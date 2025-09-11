@@ -44,7 +44,8 @@ public class Game implements ConfigurationSerializable {
 
     public void leave(Player player) {
        final boolean removed = players.removeIf(gp -> gp.getPlayer().getUniqueId().equals(player.getUniqueId()));
-        if(removed) {Bukkit.getPluginManager().callEvent(new PlayerLeaveGameEvent(player, this));
+        if (removed) {
+            Bukkit.getPluginManager().callEvent(new PlayerLeaveGameEvent(player, this));
         }
     }
 

@@ -25,7 +25,7 @@ public class SetTeamSpawnArgument implements ArgumentExecutor {
     @Override
     public void execute(Player player, String[] args) {
         if (args.length < 3) {
-            player.sendMessage(messages.getPrefix().append(Component.text("Usage: /lucky " + getUsage())));
+            player.sendMessage(messages.getPrefix().append(Component.text("Usage: /skywars " + getUsage())));
             return;
         }
 

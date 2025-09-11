@@ -1,4 +1,4 @@
-prefix: "<gray>[</gray><yellow>Lucky</yellow><gray>]<reset> "
+prefix: "<gray>[</gray><yellow>Skywars</yellow><gray>]<reset> "
 entity-created: "<green><entity> created successfully."
 entity-not-found: "<red><entity> <yellow><value></yellow> not found."
 entity-already-exists: "<red><entity> <yellow><value></yellow> already exists."

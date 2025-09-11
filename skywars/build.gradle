@@ -1,0 +1,7 @@
+
+jar {
+    archiveBaseName.set('skywars')
+}
+
+group = 'nl.mingull.skywars'
+version = '1.0.0'

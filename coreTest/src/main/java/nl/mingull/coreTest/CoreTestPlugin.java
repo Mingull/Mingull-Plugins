@@ -42,7 +42,7 @@ public class CoreTestPlugin extends JavaPlugin implements Listener {
 		commandManager.registerSubcommand(new SettingsCommand());
 		commandManager.registerSubcommand(new ManageCommand());
 		commandManager.registerSubcommand(new HelpCommand());
-		commandManager.setExecutor((sender,args) -> new HelpCommand().execute(sender, args));
+		commandManager.setExecutor((sender, args) -> new HelpCommand().execute(sender, args));
 
 		this.getLogger().info("Mingull Core Test has been enabled!");
 	}
@@ -56,12 +56,12 @@ public class CoreTestPlugin extends JavaPlugin implements Listener {
 
 	@Override
 	public Logger getLogger() {
-		if (!this.isEnabled()){
+		if (!this.isEnabled()) {
 			return super.getLogger();
-		} else if (this.getConfig().getBoolean("debugger")){
+		} else if (this.getConfig().getBoolean("debugger")) {
 			return super.getLogger();
-		} else{
-			return null;
+		} else {
+			return super.getLogger();
 		}
 	}
 

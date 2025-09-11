@@ -1,0 +1,13 @@
+prefix: "<gray>[</gray><gold>Rankly</gold><gray>]<reset> "
+entity-created: "<green><entity> created successfully."
+entity-not-found: "<red><entity> <yellow><value></yellow> not found."
+entity-already-exists: "<red><entity> <yellow><value></yellow> already exists."
+no-permission: "<red>You do not have permission to execute this command."
+invalid-arguments: "<red>Invalid arguments. Usage: <yellow><usage></yellow>"
+command-only-for-players: "<red>Only players can execute this command."
+player-stats:
+    - "<gold>Stats for <yellow><player></yellow>:"
+    - "<gray> - Kills: <green><kills></green>"
+    - "<gray> - Deaths: <red><deaths></red>"
+    - "<gray> - Joins: <aqua><joins></aqua>"
+    - "<gray> - Playtime: <blue><playtime></blue>"

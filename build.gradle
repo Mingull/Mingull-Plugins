@@ -17,12 +17,16 @@ subprojects {
 
     dependencies {
         compileOnly 'io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT'
+    	compileOnly "org.projectlombok:lombok:1.18.38"
+
         implementation "net.kyori:adventure-api:4.24.0"
+
+	    annotationProcessor "org.projectlombok:lombok:1.18.38"  
     }
 
     java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(23))
+            languageVersion.set(JavaLanguageVersion.of(24))
         }
     }
 
@@ -42,7 +46,8 @@ tasks.named('jar') {
 // Create a task to copy built JARs from all subprojects to the 'dist' folder
 task copyJars(type: Copy) {
     from subprojects.collect { it.tasks.named('jar') }
-    into 'C:\\Users\\niels\\Desktop\\development\\servers\\server-planetnode\\plugins'
+    // into 'C:\\Users\\niels\\Desktop\\development\\servers\\server-planetnode\\plugins'
+    into 'C:\\Users\\niels\\Desktop\\development\\servers\\test-server\\plugins'
 }
 
 tasks.named('build') {

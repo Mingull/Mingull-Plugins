@@ -1,0 +1,15 @@
+name: Skywars
+version: 1.0.0
+main: nl.mingull.skywars.SkywarsPlugin
+description: Skywars is a plugin that adds a Skywars minigame to your server.
+author: Mingull
+api-version: "1.21.8"
+prefix: "Skywars"
+website: https://mingull.nl/skywars
+
+commands:
+    skywars:
+        description: Main command for the Skywars plugin.
+        usage: /<command>
+        permission: skywars.use
+        permission-message: You do not have permission to use this command.

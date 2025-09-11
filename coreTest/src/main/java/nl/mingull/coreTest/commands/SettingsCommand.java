@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import nl.mingull.core.Utils;
 import nl.mingull.core.commandKit.Subcommand;
+import nl.mingull.core.configKit.ConfigManager;
 import nl.mingull.core.menuKit_old.AdvancedIcon;
 import nl.mingull.core.menuKit_old.Rows;
 import nl.mingull.core.menuKit_old.SimpleMenu;
@@ -15,9 +16,11 @@ import nl.mingull.coreTest.CoreTestPlugin;
 
 public class SettingsCommand extends Subcommand {
 	private final SimpleMenu menu;
+	private ConfigManager configManager;
 
 	public SettingsCommand() {
 		super("settings", "Open the settings menu");
+		configManager = CoreTestPlugin.getConfigManager();
 		addPermission(Utils.Permissions.SETTINGS);
 
 		this.menu = new SimpleMenu(Rows.THREE, Component.text("Settings", NamedTextColor.GRAY));
@@ -26,7 +29,8 @@ public class SettingsCommand extends Subcommand {
 		// this.menu.fill(Icons.GlassPane.StainedGray);
 
 		// Load and set the initial debug mode icon
-		boolean isDebugEnabled = CoreTestPlugin.getConfigManager().getConfig("config").getBoolean("debugger");
+		var config = configManager.getConfig("config");
+		boolean isDebugEnabled = config.getBoolean("debugger");
 		updateDebugIcon(isDebugEnabled);
 	}
 

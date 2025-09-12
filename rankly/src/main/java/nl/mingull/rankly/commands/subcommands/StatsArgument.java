@@ -35,7 +35,12 @@ public class StatsArgument implements SubcommandTabExecutor {
             }
         }
 
-        final PlayerStats stats = statsManager.getPlayerStats(target.getName()).get();
+        final java.util.Optional<PlayerStats> optionalStats = statsManager.getPlayerStats(target.getName());
+        if (!optionalStats.isPresent()) {
+            player.sendMessage("Stats not found for player: " + target.getName());
+            return;
+        }
+        final PlayerStats stats = optionalStats.get();
 
         player.sendMessage(
                 messages.getMessage(MessageType.PLAYER_STATS, Placeholder.unparsed("player", target.getName()),

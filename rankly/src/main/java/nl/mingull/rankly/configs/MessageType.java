@@ -7,15 +7,25 @@ public enum MessageType {
 	NO_PERMISSION("no-permission"),
 	INVALID_ARGUMENTS("invalid-arguments"),
 	COMMAND_ONLY_FOR_PLAYERS("command-only-for-players"),
-	PLAYER_STATS("player-stats");
+	PLAYER_STATS("player-stats", true);
 
 	private final String path;
+	private final boolean isList;
 
 	MessageType(String path) {
+		this(path, false);
+	}
+
+	MessageType(String path, boolean isList) {
 		this.path = path;
+		this.isList = isList;
 	}
 
 	public String getPath() {
 		return this.path;
+	}
+
+	public boolean isList() {
+		return isList;
 	}
 }

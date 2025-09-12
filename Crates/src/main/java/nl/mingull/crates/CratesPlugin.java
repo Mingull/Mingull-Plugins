@@ -55,8 +55,8 @@ public class CratesPlugin extends JavaPlugin {
 				.setExecutor(this);
 		var configManager = new ConfigManager(this).registerConfig(DefaultConfig::new).load();
 
-		registerEvents(new CrateListener(this), hologramManager.getListener(),
-				CrateSelectionManager.getListener());
+		// registerEvents(new CrateListener(this), hologramManager.getListener(),
+		// 		CrateSelectionManager.getListener());
 		registerManagers(new ChatManager(this), commandManager,
 				configManager, new CrateManager(this),
 				CrateSelectionManager, hologramManager,

@@ -8,7 +8,6 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.6'
 }
 
-
 jar {
     archiveBaseName.set('rankly')
 }

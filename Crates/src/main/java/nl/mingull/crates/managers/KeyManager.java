@@ -3,7 +3,6 @@ package nl.mingull.crates.managers;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import nl.mingull.core.managerKit.Manager;
 import nl.mingull.core.menuKit.Icon;

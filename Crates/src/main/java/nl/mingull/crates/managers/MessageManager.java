@@ -1,7 +1,6 @@
 package nl.mingull.crates.managers;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import nl.mingull.core.managerKit.Manager;
 import nl.mingull.crates.CratesPlugin;

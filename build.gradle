@@ -46,8 +46,8 @@ tasks.named('jar') {
 // Create a task to copy built JARs from all subprojects to the 'dist' folder
 task copyJars(type: Copy) {
     from subprojects.collect { it.tasks.named('jar') }
-    // into 'C:\\Users\\niels\\Desktop\\development\\servers\\server-planetnode\\plugins'
-    into 'C:\\Users\\niels\\Desktop\\development\\servers\\test-server\\plugins'
+    into 'C:\\Users\\niels\\Desktop\\development\\servers\\server-planetnode\\plugins'
+    // into 'C:\\Users\\niels\\Desktop\\development\\servers\\test-server\\plugins'
 }
 
 tasks.named('build') {

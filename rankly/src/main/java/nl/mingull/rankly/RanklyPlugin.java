@@ -103,7 +103,10 @@ public class RanklyPlugin extends JavaPlugin implements Listener {
 		Player player = event.getPlayer();
 		
 		// Create a new PlayerStats object for the player
-		PlayerStats playerStats = new PlayerStats(player.getName(), 0, player.getStatistic(Statistic.PLAYER_KILLS), player.getStatistic(Statistic.DEATHS), player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20);
+		int playerKills = player.getStatistic(Statistic.PLAYER_KILLS);
+		int playerDeaths = player.getStatistic(Statistic.DEATHS);
+		int playTime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20;
+		PlayerStats playerStats = new PlayerStats(player.getName(), 0, playerKills, playerDeaths, playTime);
 		
 		// Add the PlayerStats to the StatsManager
 		statsManager.addPlayerStats(playerStats);

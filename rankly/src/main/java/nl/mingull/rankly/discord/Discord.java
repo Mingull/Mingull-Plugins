@@ -34,6 +34,8 @@ public class Discord {
 
             future.thenAccept(res -> RanklyPlugin.getInstance().getLogger()
                     .info("Discord webhook response status: " + res.statusCode()));
+        } catch (Exception e) {
+            RanklyPlugin.getInstance().getLogger().severe("Failed to send Discord webhook: " + e.getMessage());
+            e.printStackTrace();
         }
-    }
 }

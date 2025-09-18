@@ -17,7 +17,7 @@ import nl.mingull.rankly.discord.payloads.WebhookPayload;
 @RequiredArgsConstructor
 public class Discord {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private static final String WEBHOOK_URL = "https://discord.com/api/webhooks/1416783133646389329/Fv5YdAwmsbiM7GuHGBMiZZhxO3ZIfVOZHLonnNn5OatF_ftJY75vWeTHPz_37dh7At-y";
+    private static final String WEBHOOK_URL = "discord_webhook_url";
 
     public static void sendMessage(WebhookPayload payload) {
         try (final HttpClient client = HttpClient.newHttpClient()) {

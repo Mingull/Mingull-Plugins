@@ -29,13 +29,14 @@ public class RanklyCommand implements BasicCommand {
     }
 
     @Override
-    public void execute(CommandSourceStack source,String[] args) {
-        if (!(source.getSender() instanceof Player player)){
-            source.getSender().sendMessage(messages.getMessage(MessageType.COMMAND_ONLY_FOR_PLAYERS));
+    public void execute(CommandSourceStack source, String[] args) {
+        if (!(source.getSender() instanceof Player player)) {
+            source.getSender()
+                    .sendMessage(messages.getMessage(MessageType.COMMAND_ONLY_FOR_PLAYERS));
             return;
         }
 
-        if (args.length == 0){
+        if (args.length == 0) {
             sendHelp(player);
             return;
         }
@@ -43,7 +44,7 @@ public class RanklyCommand implements BasicCommand {
         final String argument = args[0].toLowerCase();
         final SubcommandExecutor executor = arguments.get(argument);
 
-        if (executor == null){
+        if (executor == null) {
             sendHelp(player);
             return;
         }
@@ -52,29 +53,28 @@ public class RanklyCommand implements BasicCommand {
     }
 
     @Override
-    public Collection<String> suggest(CommandSourceStack source,String[] args) {
-        if (args.length == 0)
-            return List.of();
-        else if (args.length == 1){
+    public Collection<String> suggest(CommandSourceStack source, String[] args) {
+        if (args.length == 1) {
             final List<String> validArguments = new ArrayList<>();
             StringUtil.copyPartialMatches(args[0], arguments.keySet(), validArguments);
             return validArguments;
-        } else{
+        }
+        if (args.length > 1) {
             final SubcommandExecutor executor = arguments.get(args[0].toLowerCase());
             if (executor == null)
                 return List.of();
 
-            if (executor instanceof SubcommandTabExecutor tabExecutor){
+            if (executor instanceof SubcommandTabExecutor tabExecutor) {
                 return tabExecutor.tabComplete(source.getSender(), args);
             }
         }
         return List.of();
-
     }
 
     private void sendHelp(Player player) {
-        for (SubcommandExecutor executor : arguments.values()){
-            player.sendRichMessage(helpFormat.formatted(executor.getUsage(), executor.getDescription()));
+        for (SubcommandExecutor executor : arguments.values()) {
+            player.sendRichMessage(
+                    helpFormat.formatted(executor.getUsage(), executor.getDescription()));
         }
     }
 }

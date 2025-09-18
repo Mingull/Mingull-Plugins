@@ -23,13 +23,13 @@ public class StatsArgument implements SubcommandTabExecutor {
     }
 
     @Override
-    public void execute(Player player,String[] args) {
+    public void execute(Player player, String[] args) {
         Player target;
-        if (args.length < 2){
+        if (args.length < 2) {
             target = player;
-        } else{
+        } else {
             target = Bukkit.getPlayer(args[1]);
-            if (target == null){
+            if (target == null) {
                 player.sendMessage("Player not found!");
                 return;
             }
@@ -61,7 +61,7 @@ public class StatsArgument implements SubcommandTabExecutor {
     }
 
     @Override
-    public List<String> tabComplete(CommandSender sender,String[] args) {
+    public List<String> tabComplete(CommandSender sender, String[] args) {
         return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
     }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Crates/MingullPlugins.Crates.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Crates/MingullPlugins.Crates.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/MingullPlugins.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/MingullPlugins.core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/rankly/MingullPlugins.rankly.main.iml" filepath="$PROJECT_DIR$/.idea/modules/rankly/MingullPlugins.rankly.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/skywars/MingullPlugins.skywars.main.iml" filepath="$PROJECT_DIR$/.idea/modules/skywars/MingullPlugins.skywars.main.iml" />
+    </modules>
+  </component>
+</project>

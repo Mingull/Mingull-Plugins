@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@Getter @EqualsAndHashCode @ToString
+@Getter
+@EqualsAndHashCode
+@ToString
 public class Stat {
 	private final String name;
 	private int value;
@@ -16,7 +18,7 @@ public class Stat {
 	}
 
 	public void setValue(int value) {
-		if (value < 0){
+		if (value < 0) {
 			throw new IllegalArgumentException("Stat value cannot be negative");
 		}
 		int oldValue = this.value;
@@ -29,7 +31,7 @@ public class Stat {
 	}
 
 	public void increment(int amount) {
-		if (amount < 0){
+		if (amount < 0) {
 			throw new IllegalArgumentException("Increment amount cannot be negative");
 		}
 		setValue(this.value + amount);
@@ -40,10 +42,10 @@ public class Stat {
 	}
 
 	public void decrement(int amount) {
-		if (amount < 0){
+		if (amount < 0) {
 			throw new IllegalArgumentException("Decrement amount cannot be negative");
 		}
-		if (this.value - amount < 0){
+		if (this.value - amount < 0) {
 			throw new IllegalArgumentException("Stat value cannot be negative");
 		}
 		setValue(this.value - amount);
@@ -53,13 +55,13 @@ public class Stat {
 		this.listener = listener;
 	}
 
-	private void notifyListener(int oldValue,int newValue) {
-		if (listener != null && oldValue != newValue){
+	private void notifyListener(int oldValue, int newValue) {
+		if (listener != null && oldValue != newValue) {
 			listener.onStatChanged(this, oldValue, newValue);
 		}
 	}
 
 	public interface StatChangeListener {
-		void onStatChanged(Stat stat,int oldValue,int newValue);
+		void onStatChanged(Stat stat, int oldValue, int newValue);
 	}
 }
